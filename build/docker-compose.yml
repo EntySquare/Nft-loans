@@ -4,13 +4,13 @@ version: '3.1'
 services:
   pooluo-db:
     image: postgres
-    container_name: pooluo-db
+    container_name: loans-db
     restart: always
     ports:
-      - 8000:5432
+      - 8000:5630
     environment:
-      POSTGRES_PASSWORD: pooluo123
-      POSTGRES_DB: pooluo
+      POSTGRES_PASSWORD: loans123
+      POSTGRES_DB: loans
       POSTGRES_USER: backend
   #  volumes:
   #    - /root/dbdata/wwcc:/var/lib/postgresql/data
