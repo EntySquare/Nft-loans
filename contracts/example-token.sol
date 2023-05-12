@@ -5,7 +5,7 @@ pragma solidity >=0.8.0 <0.9.0;
 contract EXTO {
      string  _name;
     string  _symbol;
-    uint8  _decimals = 18;
+    uint8  _decimals = 4;
     uint256  _totalSupply;
     address  owner;
     mapping (address => uint256) balances;

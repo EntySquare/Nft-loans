@@ -8,9 +8,10 @@ import (
 // User struct
 type User struct {
 	gorm.Model
-	Address string
-	Account Account `gorm:"foreignKey:UserId"`
-	Flag    string  // 启用标志(1-启用 0-停用)
+	WalletAddress string
+	Token         string
+	Account       Account `gorm:"foreignKey:UserId"`
+	Flag          string  // 启用标志(1-启用 0-停用)
 }
 
 type APIUser struct {
@@ -47,6 +48,11 @@ func SelectAllUserID(db *gorm.DB) (us []uint, err error) {
 		return nil, err
 	}
 	return us, nil
+}
+
+// InsertNewUser 新增用户
+func (u *User) InsertNewUser(db *gorm.DB) error {
+	return db.Create(u).Error
 }
 
 // 更新用户Token
