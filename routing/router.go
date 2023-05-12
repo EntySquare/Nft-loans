@@ -10,15 +10,17 @@ func Setup(f *fiber.App) {
 	appApi := f.Group("/app")
 
 	AppUserSetUp(appApi)
-	AppNftSetUp(appApi)
+	AppWalletSetUp(appApi)
 
 }
 
 func AppUserSetUp(appApi fiber.Router) {
 	appApi.Post("/login", app.LoginAndRegister) //login
 }
+func AppWalletSetUp(appApi fiber.Router) {
+	appApi.Post("/wallet/deposit", intcpt.AuthApp(), app.Deposit)
+	appApi.Post("/wallet/withdraw", intcpt.AuthApp(), app.Withdraw)
+}
 func AppNftSetUp(appApi fiber.Router) {
-	appApi.Post("/nft/deposit", intcpt.AuthApp(), app.Deposit)
-	appApi.Post("/nft/withdraw", intcpt.AuthApp(), app.Withdraw)
 	appApi.Post("/nft/approve", intcpt.AuthApp(), app.Approve)
 }
