@@ -17,6 +17,9 @@ import (
 func ConnectDB() {
 	allModels := []interface{}{
 		&model.User{},
+		&model.Account{},
+		&model.Covenant{},
+		&model.Flow{},
 	}
 	var err error
 	p := config.Config("DB_PORT")

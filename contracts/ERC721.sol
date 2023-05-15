@@ -107,6 +107,7 @@ contract ERC721 is IERC721, IERC721Metadata{
         _tokenApprovals[tokenId] == spender ||
         _operatorApprovals[owner][spender]);
     }
+    
 
 
     function _transfer(

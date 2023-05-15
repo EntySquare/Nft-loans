@@ -2,6 +2,7 @@ package routing
 
 import (
 	"github.com/gofiber/fiber/v2"
+
 	"nft-loans/routing/app"
 	intcpt "nft-loans/routing/intercept"
 )
@@ -11,6 +12,7 @@ func Setup(f *fiber.App) {
 
 	AppUserSetUp(appApi)
 	AppWalletSetUp(appApi)
+	AppNftSetUp(appApi)
 
 }
 

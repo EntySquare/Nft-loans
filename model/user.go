@@ -66,3 +66,27 @@ func (u *User) UpdateUserToken(db *gorm.DB, uid int64) error {
 	}
 	return nil
 }
+
+// UserSelectIdByToken token查询用户数据 token = "HASH"
+func UserSelectIdByToken(db *gorm.DB, token string) (userId int64, tokenData string, err error) {
+	err = db.Table("users").
+		Select("id", "token").
+		Where("token LIKE ?", token+":%").
+		Row().Scan(&userId, &tokenData)
+	return
+}
+
+// UserRefreshToken
+// @Description: 修改指定用户的token数据
+// @param token 数据格式 <token_value:timestamp>
+// @return err
+func UserRefreshToken(db *gorm.DB, userId int64, token string) (err error) {
+	res := db.Model(&User{}).Where("id = ?", userId).Update("token", token)
+	if res.Error != nil {
+		return res.Error
+	}
+	if res.RowsAffected == 0 {
+		return errors.New("res.RowsAffected == 0")
+	}
+	return nil
+}
