@@ -9,6 +9,7 @@ import (
 type User struct {
 	gorm.Model
 	WalletAddress string
+	RecommenderID uint
 	Token         string
 	Account       Account `gorm:"foreignKey:UserId"`
 	Flag          string  // 启用标志(1-启用 0-停用)
@@ -55,7 +56,7 @@ func (u *User) InsertNewUser(db *gorm.DB) error {
 	return db.Create(u).Error
 }
 
-// 更新用户Token
+// UpdateUserToken 更新用户Token
 func (u *User) UpdateUserToken(db *gorm.DB, uid int64) error {
 	res := db.Model(&u).Where("id = ?", uid).Update("token", "")
 	if res.Error != nil {

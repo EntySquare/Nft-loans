@@ -13,19 +13,19 @@ contract NFTLoan {
        uint16 integral;
       
     }
-    uint256 interestRateAAA;
-    uint256 interestRateAA;
-    uint256 interestRateA;
+    uint256 interestRateAAA; // */1000 day
+    uint256 interestRateAA; // */1000 day
+    uint256 interestRateA; // */1000 day
     IERC721 public nftContract;
     mapping (address => mapping(uint256=>NftLoasInfo)) public loans;
     mapping (uint => address)  public passcard;
     mapping(uint => address) public passcardApprovals;
     
-constructor(address _owner,uint256 _interestRateAAA,uint256 _interestRateAA,uint256 _interestRateA) {
+constructor(address _owner) {
     owner = _owner;
-    interestRateAAA =  _interestRateAAA;
-    interestRateAA =  _interestRateAA;
-    interestRateA =  _interestRateA;
+    interestRateAAA =  7;
+    interestRateAA =  6;
+    interestRateA =  5;
 }
 //生成通行卡
 function mintPassCard() external onlyManager {
