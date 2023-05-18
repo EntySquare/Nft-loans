@@ -9,13 +9,18 @@ import (
 // Covenant struct
 type Covenant struct {
 	gorm.Model
-	Name              string     //产品名字
-	AccumulatedIncome float64    //累计收益
-	Duration          string     //时长
-	StartTime         *time.Time //开始执行时间
-	Flag              string     // 启用标志(1-启用 0-未启用)
-	OwnerId           uint       //用户id
-	Owner             User       //用户
+	NFTName            string     //产品名字
+	PledgeId           string     //质押ID
+	InterestRate       float64    //日利率
+	AccumulatedBenefit float64    //累计收益
+	PledgeFee          float64    //质押费用
+	ReleaseFee         float64    //释放费用
+	StartTime          *time.Time //开始执行时间
+	ExpireTime         *time.Time //结束时间
+	NFTReleaseTime     *time.Time //NFT释放时间
+	Flag               string     // 启用标志(1-质押中 2-已完成 0-取消中)
+	OwnerId            uint       //用户id
+	Owner              User       //用户
 }
 
 func NewCovenant(id int64) Covenant {
@@ -46,29 +51,14 @@ func (c *Covenant) SelectMyCovenant(db *gorm.DB) (cs []Covenant, err error) {
 	return cs, err
 }
 
-// GetAllOnTimePower 统计全网算力
-func (c *Covenant) GetAllOnTimePower(db *gorm.DB) (int64, error) {
-	var allPower sql.NullInt64
-	err := db.Model(&c).Select("sum(power)").Where("flag = '1'").Scan(&allPower).Error
+func (c *Covenant) GetUserAccumulatedBenefit(db *gorm.DB) (float64, error) {
+	var accumulatedBenefit sql.NullFloat64
+	err := db.Model(&c).Select("sum(release_fee)").Where("owner_id = ? ", c.OwnerId).Scan(&accumulatedBenefit).Error
 	if err != nil {
 		return 0, err
 	}
-	if allPower.Valid {
-		return allPower.Int64, nil
-	} else {
-		return 0, err
-	}
-}
-
-// GetUserTotalPower 统计用户总算力
-func (c *Covenant) GetUserTotalPower(db *gorm.DB, uid uint) (int64, error) {
-	var totalPower sql.NullInt64
-	err := db.Model(&c).Select("sum(power)").Where("owner_id = ? ", uid).Scan(&totalPower).Error
-	if err != nil {
-		return 0, err
-	}
-	if totalPower.Valid {
-		return totalPower.Int64, nil
+	if accumulatedBenefit.Valid {
+		return accumulatedBenefit.Float64, nil
 	} else {
 		return 0, err
 	}

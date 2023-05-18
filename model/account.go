@@ -15,3 +15,6 @@ type Account struct {
 func (u *Account) GetById(db *gorm.DB) error {
 	return db.First(&u, u.ID).Error
 }
+func (a *Account) GetByUserId(db *gorm.DB) error {
+	return db.Model(&a).Where("user_id = ? ", a.UserId).Take(&a).Error
+}
