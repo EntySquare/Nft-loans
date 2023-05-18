@@ -6,6 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"nft-loans/database"
+	"nft-loans/model/api"
 	"nft-loans/routing"
 	"time"
 )
@@ -37,10 +38,14 @@ func main() {
 		}
 	})
 	// 将速率限制器添加到路由中间件中
+	err := api.InitUserTree(database.DB)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
 	fiberApp.Use(cors.New())
 	routing.Setup(fiberApp)
 
-	err := fiberApp.Listen(":3000")
+	err = fiberApp.Listen(":3000")
 	if err != nil {
 		fmt.Println(err.Error())
 	}

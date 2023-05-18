@@ -19,3 +19,17 @@ type UpdatePwdReq struct {
 	NewPwd        string `json:"new_pwd"`
 	OldPwd        string `json:"old_pwd"`
 }
+
+type MyInvestmentResp struct {
+	UID                    string               `json:"uid"`
+	Level                  int64                `json:"level"`
+	AccumulatedPledgeCount int64                `json:"accumulated_pledge_count"`
+	InvestmentCount        int64                `json:"investment_count"`
+	InvestmentAddress      string               `json:"investment_address"`
+	InvestmentUsers        []InvestmentUserInfo `json:"investment_users"`
+}
+type InvestmentUserInfo struct {
+	UID         string `json:"uid"`
+	Level       int64  `json:"level"`
+	PledgeCount int64  `json:"pledge_count"`
+}

@@ -8,11 +8,15 @@ import (
 // User struct
 type User struct {
 	gorm.Model
-	WalletAddress string
-	RecommenderID uint
-	Token         string
-	Account       Account `gorm:"foreignKey:UserId"`
-	Flag          string  // 启用标志(1-启用 0-停用)
+	WalletAddress     string
+	RecommendId       uint
+	UID               string
+	Level             int64
+	PledgeCount       int64
+	InvestmentAddress string
+	Token             string
+	Account           Account `gorm:"foreignKey:UserId"`
+	Flag              string  // 启用标志(1-启用 0-停用)
 }
 
 type APIUser struct {

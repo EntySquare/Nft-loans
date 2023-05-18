@@ -11,10 +11,7 @@ type Covenant struct {
 	gorm.Model
 	Name              string     //产品名字
 	AccumulatedIncome float64    //累计收益
-	Power             int64      //算力
-	Cost              float64    //总计花费
 	Duration          string     //时长
-	Percent           int64      //完成度
 	StartTime         *time.Time //开始执行时间
 	Flag              string     // 启用标志(1-启用 0-未启用)
 	OwnerId           uint       //用户id

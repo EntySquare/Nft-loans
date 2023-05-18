@@ -17,7 +17,10 @@ func Setup(f *fiber.App) {
 }
 
 func AppUserSetUp(appApi fiber.Router) {
-	appApi.Post("/login", app.LoginAndRegister) //login
+	appApi.Post("/login", app.LoginAndRegister)                      //login
+	appApi.Post("/myBenefit", intcpt.AuthApp(), app.MyBenefit)       //login
+	appApi.Post("/myNgt", intcpt.AuthApp(), app.MyNgt)               //login
+	appApi.Post("/myInvestment", intcpt.AuthApp(), app.MyInvestment) //login
 }
 func AppWalletSetUp(appApi fiber.Router) {
 	appApi.Post("/wallet/deposit", intcpt.AuthApp(), app.Deposit)
