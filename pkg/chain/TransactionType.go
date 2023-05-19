@@ -1,4 +1,4 @@
-package poly
+package tron
 
 type Transaction struct {
 	Jsonrpc string          `json:"jsonrpc"`

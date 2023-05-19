@@ -1,4 +1,4 @@
-package poly
+package eth
 
 import (
 	"bytes"
@@ -20,11 +20,11 @@ type EH struct {
 	db  *gorm.DB
 }
 
-func ScanPoly(db *gorm.DB) {
+func ScanEth(db *gorm.DB) {
 	for {
 		err := database.DB.Transaction(func(tx *gorm.DB) error {
 			var txs = model.Transactions{}
-			txs.ChainName = "poly"
+			txs.ChainName = "eth"
 			untreatedTxsList, err := txs.GetUntreatedTxs(tx)
 			if err != nil {
 				return err
@@ -56,7 +56,7 @@ func ScanPoly(db *gorm.DB) {
 	}
 }
 func getTransactionByHash(hash string) (tron.Transaction, error) {
-	url := "https://polygon-mainnet.infura.io/v3/a936bfa4553a4a95862326edddc46306"
+	url := "https://mainnet.infura.io/v3/a936bfa4553a4a95862326edddc46306"
 	data := []byte(`{"jsonrpc":"2.0","method":"eth_getTransactionByHash","params":[` + hash + `],"id":1}`)
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(data))
 	transaction := tron.Transaction{}
