@@ -8,7 +8,7 @@ import (
 )
 
 func Deposit(c *fiber.Ctx) error {
-	reqParams := types.LoginAndRegisterReq{}
+	reqParams := types.DepositNgtReq{}
 	err := c.BodyParser(&reqParams)
 	if err != nil {
 		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
