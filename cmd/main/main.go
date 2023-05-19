@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/limiter"
 	"nft-loans/database"
 	"nft-loans/model/api"
+	"nft-loans/pkg/chain/poly"
 	"nft-loans/routing"
 	"time"
 )
@@ -42,6 +43,7 @@ func main() {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	go poly.ScanPoly(database.DB)
 	fiberApp.Use(cors.New())
 	routing.Setup(fiberApp)
 
