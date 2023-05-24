@@ -19,7 +19,9 @@ func ConnectDB() {
 		&model.User{},
 		&model.Account{},
 		&model.Covenant{},
-		&model.Flow{},
+		&model.AccountFlow{},
+		&model.CovenantFlow{},
+		&model.Transactions{},
 	}
 	var err error
 	p := config.Config("DB_PORT")

@@ -7,7 +7,7 @@ services:
     container_name: loans-db
     restart: always
     ports:
-      - 8000:5630
+      - 5735:5432
     environment:
       POSTGRES_PASSWORD: loans123
       POSTGRES_DB: loans
