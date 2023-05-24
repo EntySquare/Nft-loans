@@ -8,6 +8,8 @@ import (
 	"nft-loans/model/api"
 	"nft-loans/pkg"
 	"nft-loans/routing/types"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -21,15 +23,24 @@ func LoginAndRegister(c *fiber.Ctx) error {
 	user := model.User{
 		Flag: "1",
 	}
+	user.WalletAddress = reqParams.WalletAddress
+	returnT := ""
+	err = user.GetByWalletAddress(database.DB)
 	if err != nil {
-		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "user get by phone error", ""))
+		if !strings.Contains(err.Error(), "record not found") {
+			return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "user get by addresss error", ""))
+		}
+		user.Level = 0
+		user.PledgeCount = 0
+		returnT = pkg.RandomString(64)
+		user.Token = returnT + ":" + strconv.FormatInt(time.Now().Unix(), 10)
+		err = user.InsertNewUser(database.DB)
+		if err != nil {
+			return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "注册失败"))
+		}
 	}
-	returnT := pkg.RandomString(64)
-
-	err = user.InsertNewUser(database.DB)
-	if err != nil {
-		return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "注册失败"))
-	}
+	returnT = strings.Split(user.Token, ":")[0]
+	c.Locals(config.LOCAL_TOKEN, returnT)
 	return c.JSON(pkg.SuccessResponse(returnT))
 }
 func MyInvestment(c *fiber.Ctx) error {
@@ -103,7 +114,7 @@ func MyCovenantFlow(c *fiber.Ctx) error {
 	userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
 	acc := model.Account{}
 	acc.UserId = userId
-	err := acc.GetById(database.DB)
+	err := acc.GetByUserId(database.DB)
 	if err != nil {
 		return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "查询账户失败"))
 	}
@@ -125,6 +136,9 @@ func MyCovenantFlow(c *fiber.Ctx) error {
 		in := types.CovenantInfo{
 			NFTName:            coi.NFTName,
 			PledgeId:           coi.PledgeId,
+			ChainName:          coi.ChainName,
+			Duration:           coi.Duration,
+			Hash:               coi.Hash,
 			InterestRate:       coi.InterestRate,
 			AccumulatedBenefit: coi.AccumulatedBenefit,
 			PledgeFee:          coi.PledgeFee,

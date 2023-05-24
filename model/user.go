@@ -37,6 +37,9 @@ func QueryUserCount(db *gorm.DB) (uCount int64, err error) {
 	}
 	return uCount, nil
 }
+func (u *User) GetByWalletAddress(db *gorm.DB) error {
+	return db.Model(&u).Where("wallet_address = ? ", u.WalletAddress).Take(&u).Error
+}
 
 // SelectAllUser 查询所有用户
 func SelectAllUser(db *gorm.DB) (us []User, err error) {

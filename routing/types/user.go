@@ -59,6 +59,9 @@ type MyCovenantFlowResp struct {
 type CovenantInfo struct {
 	NFTName            string     `json:"nft_name"`
 	PledgeId           string     `json:"pledge_id"`
+	ChainName          string     `json:"chain_name"`
+	Duration           string     `json:"duration"`
+	Hash               string     `json:"hash"`
 	InterestRate       float64    `json:"interest_rate"`
 	AccumulatedBenefit float64    `json:"accumulated_benefit"`
 	PledgeFee          float64    `json:"pledge_fee"`

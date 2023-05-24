@@ -11,6 +11,9 @@ type Covenant struct {
 	gorm.Model
 	NFTName            string     //产品名字
 	PledgeId           string     //质押ID
+	ChainName          string     //公链名称
+	Duration           string     //质押期限
+	Hash               string     //交易哈希
 	InterestRate       float64    //日利率
 	AccumulatedBenefit float64    //累计收益
 	PledgeFee          float64    //质押费用
