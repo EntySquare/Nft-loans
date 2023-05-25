@@ -1,10 +1,10 @@
 package types
 
 type WithdrawNgtReq struct {
-	Address string `json:"address"`
-	Num     string `json:"num"`
-	Hash    string `json:"hash"`
-	Chain   string `json:"chain"`
+	Address string  `json:"address"`
+	Num     float64 `json:"num"`
+	Hash    string  `json:"hash"`
+	Chain   string  `json:"chain"`
 }
 
 type WithdrawNgtResp struct {
@@ -14,6 +14,7 @@ type WithdrawNgtResp struct {
 type DepositNgtReq struct {
 	Address string  `json:"address"`
 	Num     float64 `json:"num"`
+	Hash    string  `json:"hash"`
 	Chain   string  `json:"chain"`
 }
 

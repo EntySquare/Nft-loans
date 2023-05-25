@@ -10,7 +10,7 @@ type Transactions struct {
 	Hash      string //交易哈希
 	Status    string //交易状态  0 - 未处理  1 - 未确认 2 - 已确认
 	ChainName string //公链名
-	Flag      string // // 启用标志(1-质押中 2-已完成 0-取消中)
+	Flag      string // // 启用标志(1-充值 2-提现 0-取消中)
 }
 
 func NewTransactions(id int64) Transactions {
@@ -26,6 +26,9 @@ func (txs *Transactions) UpdateTransactions(db *gorm.DB) error {
 }
 func (txs *Transactions) InsertNewTransactions(db *gorm.DB) error {
 	return db.Create(txs).Error
+}
+func (txs *Transactions) GetByHash(db *gorm.DB) error {
+	return db.Model(&txs).Where("hash = ? ", txs.Hash).First(&txs).Error
 }
 func (txs *Transactions) GetUntreatedTxs(db *gorm.DB) ([]Transactions, error) {
 	transactionList := make([]Transactions, 0)

@@ -28,3 +28,6 @@ func (a *AccountFlow) GetByAccountId(db *gorm.DB) ([]AccountFlow, error) {
 	db.Model(&a).Where("account_id = ? ", a.AccountId).Order("ask_for_time").Find(&flowList)
 	return flowList, nil
 }
+func (a *AccountFlow) InsertNewAccountFlow(db *gorm.DB) error {
+	return db.Create(a).Error
+}

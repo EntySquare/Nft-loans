@@ -40,12 +40,12 @@ type MyNgtResp struct {
 type TransactionInfo struct {
 	Num             float64    `json:"num"`
 	Chain           string     `json:"chain"`
+	Status          string     `json:"status"`
 	Address         string     `json:"address"`
 	Hash            string     `json:"hash"`
 	AskForTime      *time.Time `json:"ask_for_time"`
 	AchieveTime     *time.Time `json:"achieve_time"`
 	TransactionType string     `json:"transaction_type"`
-	Flag            string     `json:"flag"`
 }
 type BenefitInfo struct {
 	Balance            float64 `json:"balance"`

@@ -19,3 +19,6 @@ func (ac *Account) GetById(db *gorm.DB) error {
 func (ac *Account) GetByUserId(db *gorm.DB) error {
 	return db.Model(&ac).Where("user_id = ? ", ac.UserId).Take(&ac).Error
 }
+func (ac *Account) UpdateAccount(db *gorm.DB) error {
+	return db.Model(&ac).Updates(ac).Error
+}

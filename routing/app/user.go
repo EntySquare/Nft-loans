@@ -75,7 +75,7 @@ func MyNgt(c *fiber.Ctx) error {
 	userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
 	acc := model.Account{}
 	acc.UserId = userId
-	err := acc.GetById(database.DB)
+	err := acc.GetByUserId(database.DB)
 	if err != nil {
 		return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "查询账户失败"))
 	}
@@ -94,6 +94,12 @@ func MyNgt(c *fiber.Ctx) error {
 		return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "查询账户交易失败"))
 	}
 	for _, accflow := range afs {
+		txs := model.Transactions{}
+		txs.Hash = accflow.Hash
+		err := txs.GetByHash(database.DB)
+		if err != nil {
+			return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "查询账户交易失败"))
+		}
 		in := types.TransactionInfo{
 			Num:             accflow.Num,
 			Chain:           accflow.Chain,
@@ -102,7 +108,7 @@ func MyNgt(c *fiber.Ctx) error {
 			AskForTime:      accflow.AskForTime,
 			AchieveTime:     accflow.AchieveTime,
 			TransactionType: accflow.TransactionType,
-			Flag:            acc.Flag,
+			Status:          txs.Status,
 		}
 		data.Transactions = append(data.Transactions, in)
 
