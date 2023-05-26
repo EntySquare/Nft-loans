@@ -1,6 +1,6 @@
 module nft-loans
 
-go 1.19
+go 1.18
 
 require (
 	github.com/aliyun/aliyun-oss-go-sdk v2.2.7+incompatible
