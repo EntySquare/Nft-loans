@@ -38,6 +38,21 @@ func LoginAndRegister(c *fiber.Ctx) error {
 		if err != nil {
 			return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "注册失败"))
 		}
+		user.RecommendId = reqParams.RecommendId
+		err := user.GetByWalletAddress(database.DB)
+		if err != nil {
+			return err
+		}
+		var acc = model.Account{
+			UserId:        user.ID,
+			Balance:       0,
+			FrozenBalance: 0,
+			Flag:          "1",
+		}
+		err = acc.InsertNewAccount(database.DB)
+		if err != nil {
+			return err
+		}
 	}
 	returnT = strings.Split(user.Token, ":")[0]
 	c.Locals(config.LOCAL_TOKEN, returnT)

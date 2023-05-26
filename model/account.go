@@ -22,3 +22,6 @@ func (ac *Account) GetByUserId(db *gorm.DB) error {
 func (ac *Account) UpdateAccount(db *gorm.DB) error {
 	return db.Model(&ac).Updates(ac).Error
 }
+func (ac *Account) InsertNewAccount(db *gorm.DB) error {
+	return db.Create(ac).Error
+}

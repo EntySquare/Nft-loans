@@ -11,6 +11,7 @@ type SengMsg struct {
 // 登录注册请求参数
 type LoginAndRegisterReq struct {
 	WalletAddress string `json:"wallet_address"`
+	RecommendId   uint   `json:"recommend_id"`
 }
 
 // 修改支付密码请求参数
