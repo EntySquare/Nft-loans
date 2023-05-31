@@ -40,6 +40,9 @@ func QueryUserCount(db *gorm.DB) (uCount int64, err error) {
 func (u *User) GetByWalletAddress(db *gorm.DB) error {
 	return db.Model(&u).Where("wallet_address = ? ", u.WalletAddress).Take(&u).Error
 }
+func (u *User) GetByUid(db *gorm.DB) error {
+	return db.Model(&u).Where("uid = ? ", u.UID).Take(&u).Error
+}
 
 // SelectAllUser 查询所有用户
 func SelectAllUser(db *gorm.DB) (us []User, err error) {

@@ -32,6 +32,9 @@ func LoginAndRegister(c *fiber.Ctx) error {
 		}
 		user.Level = 0
 		user.PledgeCount = 0
+		user.UID = pkg.RandomCodes(6) + user.WalletAddress[6:9]
+		//user.InvestmentAddress = "https://metagalaxylands.com/" + user.UID
+		user.InvestmentAddress = "http://localhost:4001/" + user.UID
 		returnT = pkg.RandomString(64)
 		user.Token = returnT + ":" + strconv.FormatInt(time.Now().Unix(), 10)
 		err = user.InsertNewUser(database.DB)
@@ -120,8 +123,8 @@ func MyNgt(c *fiber.Ctx) error {
 			Chain:           accflow.Chain,
 			Address:         accflow.Address,
 			Hash:            accflow.Hash,
-			AskForTime:      accflow.AskForTime,
-			AchieveTime:     accflow.AchieveTime,
+			AskForTime:      accflow.AskForTime.Unix(),
+			AchieveTime:     accflow.AchieveTime.Unix(),
 			TransactionType: accflow.TransactionType,
 			Status:          txs.Status,
 		}
@@ -164,9 +167,9 @@ func MyCovenantFlow(c *fiber.Ctx) error {
 			AccumulatedBenefit: coi.AccumulatedBenefit,
 			PledgeFee:          coi.PledgeFee,
 			ReleaseFee:         coi.ReleaseFee,
-			StartTime:          coi.StartTime,
-			ExpireTime:         coi.ExpireTime,
-			NFTReleaseTime:     coi.NFTReleaseTime,
+			StartTime:          coi.StartTime.Unix(),
+			ExpireTime:         coi.ExpireTime.Unix(),
+			NFTReleaseTime:     coi.NFTReleaseTime.Unix(),
 			Flag:               coi.Flag,
 		}
 		data.Covenants = append(data.Covenants, in)
@@ -204,4 +207,50 @@ func getBenefit(acc model.Account) (types.BenefitInfo, error) {
 		data.LastDayBenefit += flow.Num
 	}
 	return data, nil
+}
+func GetInviteeInfo(c *fiber.Ctx) error {
+	reqParams := types.InviteeInfoReq{}
+	err := c.BodyParser(&reqParams)
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
+	}
+	var user = model.User{}
+	user.UID = reqParams.Uid
+	err = user.GetByUid(database.DB)
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "find uid error", ""))
+	}
+	data := types.InviteeInfoResp{
+		Uid:         reqParams.Uid,
+		Level:       user.Level,
+		PledgeCount: api.UserTree[user.ID].PledgeCount,
+		CreateTime:  user.CreatedAt.Unix(),
+		Covenants:   make([]types.CovenantInfo, 0),
+	}
+	co := model.Covenant{}
+	co.OwnerId = user.ID
+	cos, err := co.SelectMyCovenant(database.DB)
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "查询账户交易失败"))
+	}
+	for _, coi := range cos {
+		in := types.CovenantInfo{
+			NFTName:            coi.NFTName,
+			PledgeId:           coi.PledgeId,
+			ChainName:          coi.ChainName,
+			Duration:           coi.Duration,
+			Hash:               coi.Hash,
+			InterestRate:       coi.InterestRate,
+			AccumulatedBenefit: coi.AccumulatedBenefit,
+			PledgeFee:          coi.PledgeFee,
+			ReleaseFee:         coi.ReleaseFee,
+			StartTime:          coi.StartTime.Unix(),
+			ExpireTime:         coi.ExpireTime.Unix(),
+			NFTReleaseTime:     coi.NFTReleaseTime.Unix(),
+			Flag:               coi.Flag,
+		}
+		data.Covenants = append(data.Covenants, in)
+
+	}
+	return c.JSON(pkg.SuccessResponse(data))
 }

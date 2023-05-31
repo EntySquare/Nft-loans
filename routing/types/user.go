@@ -1,7 +1,5 @@
 package types
 
-import "time"
-
 type SengMsg struct {
 	Msg   string `json:"msg"`
 	Phone string `json:"phone"`
@@ -39,14 +37,14 @@ type MyNgtResp struct {
 	Transactions []TransactionInfo `json:"transactions"`
 }
 type TransactionInfo struct {
-	Num             float64    `json:"num"`
-	Chain           string     `json:"chain"`
-	Status          string     `json:"status"`
-	Address         string     `json:"address"`
-	Hash            string     `json:"hash"`
-	AskForTime      *time.Time `json:"ask_for_time"`
-	AchieveTime     *time.Time `json:"achieve_time"`
-	TransactionType string     `json:"transaction_type"`
+	Num             float64 `json:"num"`
+	Chain           string  `json:"chain"`
+	Status          string  `json:"status"`
+	Address         string  `json:"address"`
+	Hash            string  `json:"hash"`
+	AskForTime      int64   `json:"ask_for_time"`
+	AchieveTime     int64   `json:"achieve_time"`
+	TransactionType string  `json:"transaction_type"`
 }
 type BenefitInfo struct {
 	Balance            float64 `json:"balance"`
@@ -58,17 +56,27 @@ type MyCovenantFlowResp struct {
 	Covenants   []CovenantInfo `json:"covenant_flows"`
 }
 type CovenantInfo struct {
-	NFTName            string     `json:"nft_name"`
-	PledgeId           string     `json:"pledge_id"`
-	ChainName          string     `json:"chain_name"`
-	Duration           string     `json:"duration"`
-	Hash               string     `json:"hash"`
-	InterestRate       float64    `json:"interest_rate"`
-	AccumulatedBenefit float64    `json:"accumulated_benefit"`
-	PledgeFee          float64    `json:"pledge_fee"`
-	ReleaseFee         float64    `json:"release_fee"`
-	StartTime          *time.Time `json:"start_time"`
-	ExpireTime         *time.Time `json:"expire_time"`
-	NFTReleaseTime     *time.Time `json:"nft_release_time"`
-	Flag               string     `json:"flag"`
+	NFTName            string  `json:"nft_name"`
+	PledgeId           string  `json:"pledge_id"`
+	ChainName          string  `json:"chain_name"`
+	Duration           string  `json:"duration"`
+	Hash               string  `json:"hash"`
+	InterestRate       float64 `json:"interest_rate"`
+	AccumulatedBenefit float64 `json:"accumulated_benefit"`
+	PledgeFee          float64 `json:"pledge_fee"`
+	ReleaseFee         float64 `json:"release_fee"`
+	StartTime          int64   `json:"start_time"`
+	ExpireTime         int64   `json:"expire_time"`
+	NFTReleaseTime     int64   `json:"nft_release_time"`
+	Flag               string  `json:"flag"`
+}
+type InviteeInfoReq struct {
+	Uid string `json:"uid"`
+}
+type InviteeInfoResp struct {
+	Uid         string         `json:"uid"`
+	Level       int64          `json:"level"`
+	PledgeCount int64          `json:"pledge_count"`
+	CreateTime  int64          `json:"create_time"`
+	Covenants   []CovenantInfo `json:"covenant_flows"`
 }
