@@ -28,5 +28,5 @@ func AppWalletSetUp(appApi fiber.Router) {
 	appApi.Post("/wallet/withdraw", intcpt.AuthApp(), app.Withdraw)
 }
 func AppNftSetUp(appApi fiber.Router) {
-	appApi.Post("/nft/approve", intcpt.AuthApp(), app.Approve)
+	appApi.Post("/nft/pledgeNft", intcpt.AuthApp(), app.PledgeNft)
 }
