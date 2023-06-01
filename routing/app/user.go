@@ -254,3 +254,31 @@ func GetInviteeInfo(c *fiber.Ctx) error {
 	}
 	return c.JSON(pkg.SuccessResponse(data))
 }
+func GetCovenantDetail(c *fiber.Ctx) error {
+	reqParams := types.CovenantDetailReq{}
+	err := c.BodyParser(&reqParams)
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
+	}
+	co := model.Covenant{Hash: reqParams.Hash}
+	err = co.GetByHash(database.DB)
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "wrong hash", ""))
+	}
+	cof := model.CovenantFlow{CovenantId: co.ID}
+	bfs, err := cof.GetByCovenantId(database.DB)
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "query benefit flows error", ""))
+	}
+	data := types.CovenantDetailResp{}
+	for _, bf := range bfs {
+		in := types.CovenantDetail{
+			Time: bf.CreatedAt.Unix(),
+			Num:  bf.Num,
+			Flag: bf.Flag,
+		}
+		data.List = append(data.List, in)
+	}
+
+	return c.JSON(pkg.SuccessResponse(data))
+}

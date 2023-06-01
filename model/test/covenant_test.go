@@ -68,3 +68,15 @@ func TestInsertCovenant(t *testing.T) {
 	}).Error
 	fmt.Println(err)
 }
+func TestInsertCovenantFlow(t *testing.T) {
+	database.ConnectDB()
+	tt := time.Now()
+	err := database.DB.Create(&model.CovenantFlow{
+		AccountId:   2,
+		CovenantId:  29,
+		Num:         100,
+		ReleaseDate: tt.Unix(),
+		Flag:        "1",
+	}).Error
+	fmt.Println(err)
+}

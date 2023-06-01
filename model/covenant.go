@@ -40,6 +40,9 @@ func (c *Covenant) UpdateCovenant(db *gorm.DB) error {
 func (c *Covenant) InsertNewCovenant(db *gorm.DB) error {
 	return db.Create(c).Error
 }
+func (c *Covenant) GetByHash(db *gorm.DB) error {
+	return db.Model(&c).Where("hash = ? ", c.Hash).Take(&c).Error
+}
 
 // SelectMyCovenant
 //

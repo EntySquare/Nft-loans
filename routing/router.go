@@ -17,11 +17,12 @@ func Setup(f *fiber.App) {
 }
 
 func AppUserSetUp(appApi fiber.Router) {
-	appApi.Post("/login", app.LoginAndRegister)                          //login
-	appApi.Post("/myCovenantFlow", intcpt.AuthApp(), app.MyCovenantFlow) //login
-	appApi.Post("/myNgt", intcpt.AuthApp(), app.MyNgt)                   //login
-	appApi.Post("/myInvestment", intcpt.AuthApp(), app.MyInvestment)     //login
-	appApi.Post("/getInviteeInfo", intcpt.AuthApp(), app.GetInviteeInfo) //login
+	appApi.Post("/login", app.LoginAndRegister)                                //login
+	appApi.Post("/myCovenantFlow", intcpt.AuthApp(), app.MyCovenantFlow)       //login
+	appApi.Post("/myNgt", intcpt.AuthApp(), app.MyNgt)                         //login
+	appApi.Post("/myInvestment", intcpt.AuthApp(), app.MyInvestment)           //login
+	appApi.Post("/getInviteeInfo", intcpt.AuthApp(), app.GetInviteeInfo)       //login
+	appApi.Post("/getCovenantDetail", intcpt.AuthApp(), app.GetCovenantDetail) //login
 }
 func AppWalletSetUp(appApi fiber.Router) {
 	appApi.Post("/wallet/deposit", intcpt.AuthApp(), app.Deposit)
