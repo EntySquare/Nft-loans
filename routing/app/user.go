@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 	"nft-loans/config"
 	"nft-loans/database"
 	"nft-loans/model"
@@ -26,36 +27,42 @@ func LoginAndRegister(c *fiber.Ctx) error {
 	user.WalletAddress = reqParams.WalletAddress
 	returnT := ""
 	err = user.GetByWalletAddress(database.DB)
+	err = database.DB.Transaction(func(tx *gorm.DB) error {
+		if err != nil {
+			if !strings.Contains(err.Error(), "record not found") {
+				return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "user get by addresss error", ""))
+			}
+			user.Level = 0
+			user.PledgeCount = 0
+			user.UID = pkg.RandomCodes(6) + user.WalletAddress[6:9]
+			//user.InvestmentAddress = "https://metagalaxylands.com/" + user.UID
+			user.InvestmentAddress = "http://localhost:4001/" + user.UID
+			returnT = pkg.RandomString(64)
+			user.Token = returnT + ":" + strconv.FormatInt(time.Now().Unix(), 10)
+			err = user.InsertNewUser(tx)
+			if err != nil {
+				return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "注册失败"))
+			}
+			user.RecommendId = reqParams.RecommendId
+			err := user.GetByWalletAddress(tx)
+			if err != nil {
+				return err
+			}
+			var acc = model.Account{
+				UserId:        user.ID,
+				Balance:       0,
+				FrozenBalance: 0,
+				Flag:          "1",
+			}
+			err = acc.InsertNewAccount(tx)
+			if err != nil {
+				return err
+			}
+		}
+		return nil
+	})
 	if err != nil {
-		if !strings.Contains(err.Error(), "record not found") {
-			return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "user get by addresss error", ""))
-		}
-		user.Level = 0
-		user.PledgeCount = 0
-		user.UID = pkg.RandomCodes(6) + user.WalletAddress[6:9]
-		//user.InvestmentAddress = "https://metagalaxylands.com/" + user.UID
-		user.InvestmentAddress = "http://localhost:4001/" + user.UID
-		returnT = pkg.RandomString(64)
-		user.Token = returnT + ":" + strconv.FormatInt(time.Now().Unix(), 10)
-		err = user.InsertNewUser(database.DB)
-		if err != nil {
-			return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "注册失败"))
-		}
-		user.RecommendId = reqParams.RecommendId
-		err := user.GetByWalletAddress(database.DB)
-		if err != nil {
-			return err
-		}
-		var acc = model.Account{
-			UserId:        user.ID,
-			Balance:       0,
-			FrozenBalance: 0,
-			Flag:          "1",
-		}
-		err = acc.InsertNewAccount(database.DB)
-		if err != nil {
-			return err
-		}
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, err.Error(), "注册失败"))
 	}
 	returnT = strings.Split(user.Token, ":")[0]
 	c.Locals(config.LOCAL_TOKEN, returnT)

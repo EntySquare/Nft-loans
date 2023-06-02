@@ -2,9 +2,13 @@ package app
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 	"nft-loans/config"
+	"nft-loans/database"
+	"nft-loans/model"
 	"nft-loans/pkg"
 	"nft-loans/routing/types"
+	"time"
 )
 
 func PledgeNft(c *fiber.Ctx) error {
@@ -13,9 +17,33 @@ func PledgeNft(c *fiber.Ctx) error {
 	if err != nil {
 		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
 	}
-	println(reqParams.NftId)
-	println(reqParams.Chain)
-	println(reqParams.Duration)
-	println(reqParams.Hash)
+	tt := time.Now()
+	userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
+	err = database.DB.Transaction(func(tx *gorm.DB) error {
+		co := model.Covenant{
+			NFTName:            "TEST",
+			PledgeId:           reqParams.NftId,
+			ChainName:          reqParams.Chain,
+			Duration:           reqParams.Duration,
+			Hash:               reqParams.Hash,
+			InterestRate:       0.6,
+			AccumulatedBenefit: 0,
+			PledgeFee:          0,
+			ReleaseFee:         0,
+			StartTime:          &tt,
+			ExpireTime:         &tt,
+			NFTReleaseTime:     &tt,
+			Flag:               "1",
+			OwnerId:            userId,
+		}
+		err := co.InsertNewCovenant(tx)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "pledge error", ""))
+	}
 	return c.JSON(pkg.SuccessResponse(""))
 }
