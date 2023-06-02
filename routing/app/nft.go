@@ -8,6 +8,7 @@ import (
 	"nft-loans/model"
 	"nft-loans/pkg"
 	"nft-loans/routing/types"
+	"strconv"
 	"time"
 )
 
@@ -20,6 +21,11 @@ func PledgeNft(c *fiber.Ctx) error {
 	tt := time.Now()
 	userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
 	err = database.DB.Transaction(func(tx *gorm.DB) error {
+		atoi, err := strconv.Atoi(reqParams.Duration)
+		if err != nil {
+			return err
+		}
+		tf := tt.AddDate(0, 0, atoi)
 		co := model.Covenant{
 			NFTName:            "TEST",
 			PledgeId:           reqParams.NftId,
@@ -31,12 +37,12 @@ func PledgeNft(c *fiber.Ctx) error {
 			PledgeFee:          0,
 			ReleaseFee:         0,
 			StartTime:          &tt,
-			ExpireTime:         &tt,
+			ExpireTime:         &tf,
 			NFTReleaseTime:     &tt,
 			Flag:               "1",
 			OwnerId:            userId,
 		}
-		err := co.InsertNewCovenant(tx)
+		err = co.InsertNewCovenant(tx)
 		if err != nil {
 			return err
 		}
