@@ -46,6 +46,16 @@ func PledgeNft(c *fiber.Ctx) error {
 		if err != nil {
 			return err
 		}
+		txs := model.Transactions{
+			Hash:      reqParams.Hash,
+			Status:    "1",
+			ChainName: reqParams.Chain,
+			Flag:      "1",
+		}
+		err = txs.InsertNewTransactions(tx)
+		if err != nil {
+			return err
+		}
 		return nil
 	})
 	if err != nil {
