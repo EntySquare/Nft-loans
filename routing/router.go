@@ -8,7 +8,6 @@ import (
 
 func Setup(f *fiber.App) {
 	appApi := f.Group("/app")
-
 	AppSetUp(appApi)
 
 }
