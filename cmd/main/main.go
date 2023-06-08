@@ -23,7 +23,11 @@ func main() {
 		},
 	}))
 	// 添加 CORS 中间件
-	fiberApp.Use(cors.New())
+	fiberApp.Use(cors.New(cors.Config{
+		AllowOrigins: "*",
+		AllowMethods: "GET, POST, PUT, DELETE",
+		AllowHeaders: "Origin, X-Requested-With, Content-Type, Accept",
+	}))
 	// 将速率限制器添加到路由中间件中
 	err := api.InitUserTree(database.DB)
 	if err != nil {
