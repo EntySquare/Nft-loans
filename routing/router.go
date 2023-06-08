@@ -2,18 +2,12 @@ package routing
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-
 	"nft-loans/routing/app"
 	intcpt "nft-loans/routing/intercept"
 )
 
 func Setup(f *fiber.App) {
-	appApi := f.Use(cors.New(cors.Config{
-		AllowOrigins: "*",
-		AllowMethods: "GET, POST, PUT, DELETE",
-		AllowHeaders: "Origin, X-Requested-With, Content-Type, Accept",
-	})).Group("/app")
+	appApi := f.Group("/app")
 
 	AppSetUp(appApi)
 

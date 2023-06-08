@@ -23,20 +23,7 @@ func main() {
 		},
 	}))
 	// 添加 CORS 中间件
-	fiberApp.Use(func(c *fiber.Ctx) error {
-		// 允许所有域名进行跨域请求
-		c.Set("Access-Control-Allow-Origin", "*")
-		// 允许 GET、POST、PUT、DELETE 和 OPTIONS 方法进行跨域请求
-		c.Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		// 允许客户端发送的请求头
-		c.Set("Access-Control-Allow-Headers", "Content-Type, Authorization, token")
-		// 在响应中添加 CORS 头
-		if c.Method() == "OPTIONS" {
-			return c.SendStatus(fiber.StatusOK)
-		} else {
-			return c.Next()
-		}
-	})
+	fiberApp.Use(cors.New())
 	// 将速率限制器添加到路由中间件中
 	err := api.InitUserTree(database.DB)
 	if err != nil {
