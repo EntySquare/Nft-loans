@@ -253,10 +253,10 @@
 			]
 		},
 		"nft-loans/contracts/nft-loan.sol": {
-			"keccak256": "0x2ea10c838a88358dd3f628f1b1ac329f5ea2f13c4c9bc0ce49a723d53da9f513",
+			"keccak256": "0xce3e91a77d32cab6592c8a73aa0b641d86fd880980d04c42a7e69714a4d8c8c4",
 			"urls": [
-				"bzz-raw://161ac406a3bcc65c9e46dd472568bf3e584c99eff58dede06bdd9efe282cb214",
-				"dweb:/ipfs/QmZmFuVCTKEVji1ABQ4gGhCy7hyFArudiuHkYcKDWnQTec"
+				"bzz-raw://8c4c0260f72a62f604022a30eae2e5309aa2ea61338a6c9c0d9edf3064d7f68e",
+				"dweb:/ipfs/QmTcqeJXe2vhwdUKahyYeAWWE6DmkJWEtyJ6MDkTMddSiU"
 			]
 		}
 	},

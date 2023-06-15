@@ -129,14 +129,14 @@ function depositNFT(uint256  _tokenId) external payable {
 
                 nftContract = IERC721(nft);
                 require(nftContract.ownerOf(_tokenId) == msg.sender, "You don't own this NFT");
-                // NftLoasInfo memory newLoans;
-                // uint256 nowNumer = loansNumber[msg.sender];
-                // newLoans.tokenId = _tokenId;
-                // newLoans.loanTime = block.timestamp;
-                // newLoans.flag = 1;
-                // loans[msg.sender][nowNumer] = newLoans;
-                // loansNumber[msg.sender] += 1;
-                // nftContract.approve(address(this), _tokenId);
+                NftLoasInfo memory newLoans;
+                uint256 nowNumer = loansNumber[msg.sender];
+                newLoans.tokenId = _tokenId;
+                newLoans.loanTime = block.timestamp;
+                newLoans.flag = 1;
+                loans[msg.sender][nowNumer] = newLoans;
+                loansNumber[msg.sender] += 1;
+                nftContract.approve(address(this), _tokenId);
       
 }
 //赎回nft
@@ -146,7 +146,7 @@ function withdrawNFT(uint256 _tokenId) onlyManager external payable {
     for (uint i = 0; i < nowNumer; ++i ) {
         if (loans[msg.sender][i].tokenId == _tokenId) {
             require(loans[msg.sender][i].flag == 1, "You already have withdraw");   
-             loans[msg.sender][_tokenId].flag  = 0;
+             loans[msg.sender][i].flag  = 0;
              nftContract.approve(msg.sender, _tokenId);
         }
     }
@@ -157,24 +157,10 @@ function ownerOf(uint256  _tokenId) public returns (address){
                 return nftContract.ownerOf(_tokenId);
       
 }
-function loansList(uint start,uint limit,address user) public returns (uint256[] memory){
+function loansList(address user) public returns (NftLoasInfo[] memory){
     nftContract = IERC721(nft);
-    uint256 nowNumer = loansNumber[user];
-    uint l = 0;
-    uint256[] memory list;
-    for (uint i = 0; i < nowNumer; ++i ) {
-            if(loans[user][i].flag == 1){
-                if (l >= start && l < start + limit){
-                list[l] = loans[user][i].tokenId;
-                l++;
-                }
-                if(l > start + limit){
-                    return list;
-                }
-            }   
-           
-    }
-    return list;
+    
+    return loans[user];
 }
 function loansCount(address user) public view returns (uint256){
     uint256 nowNumer = loansNumber[user];
