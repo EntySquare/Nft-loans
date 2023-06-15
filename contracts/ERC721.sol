@@ -24,7 +24,6 @@ contract ERC721 is IERC721, IERC721Metadata{
     // owner地址。到operator地址 的批量授权映射
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
-
     constructor(string memory name_, string memory symbol_) {
         name = name_;
         symbol = symbol_;
@@ -92,7 +91,7 @@ contract ERC721 is IERC721, IERC721Metadata{
         address owner = _owners[tokenId];
         require(
             msg.sender == owner || _operatorApprovals[owner][msg.sender],
-            "not owner nor approved for all"
+            "not owner nor approved for all "
         );
         _approve(owner, to, tokenId);
     }

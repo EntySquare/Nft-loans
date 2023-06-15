@@ -35,19 +35,7 @@ contract ngt{
 contract NGT is ngt {
     using SafeMathCell for uint256;
     uint256 constant exchange_rate_usdt = 100000;
-    mapping(uint8 => TokenInfo) tokens;
     address foundation;
-    mapping (address => AddressStatus) details;
-    struct TokenInfo{
-        string token_name;
-        address token_address;
-        uint256 exchange_rate; 
-    }
-    struct AddressStatus{
-        uint256 locked_balances;
-        uint256 avilable_balances;
-        address recommender;
-    }
     address  owner;
     struct NftLoasInfo {
         uint256 tokenId;
@@ -87,11 +75,11 @@ contract NGT is ngt {
     }
     function _transfer(address _to, uint256 _value,uint256 tax) internal returns (bool success){
         require(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to],"Insufficient funds");
-        require(details[msg.sender].avilable_balances >= _value,"Insufficient funds");
+        
         balances[msg.sender] -= _value;//从消息发送者账户中减去token数量_value      
-        details[msg.sender].avilable_balances -= _value;
+        
         balances[_to] += _value.sub(tax);//往接收账户增加token数量_value
-        details[_to].avilable_balances += _value.sub(tax);
+       
         emit Transfer(msg.sender, _to, _value);//触发转币交易事件
        
         return true;
@@ -99,11 +87,11 @@ contract NGT is ngt {
     function _transferFrom(address _from, address _to, uint256 _value,uint256 tax) internal returns 
     (bool success) {
         require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value,"Insufficient funds");
-        require(details[_from].avilable_balances >= _value,"Insufficient funds");
+       
         balances[_from] -= _value; //支出账户_from减去token数量_value
-        details[_from].avilable_balances -= _value;
+        
         balances[_to] += _value.sub(tax);//接收账户增加token数量_value
-        details[_to].avilable_balances += _value.sub(tax);
+       
         allowed[_from][msg.sender] -= _value;//消息发送者可以从账户_from中转出的数量减少_value
         emit Transfer(_from, _to, _value);//触发转币交易事件
         return true;
@@ -114,19 +102,9 @@ contract NGT is ngt {
         require(amount <= totalSupply);
         totalSupply -= amount;
   }     
-  //@notice bind user with recommender (one can only have one recommender)
-  function bindRecommender(address _recommender) external returns(bool){
-      require(details[msg.sender].recommender == address(0),"this address has been bound");
-      _bind(msg.sender,_recommender);
-      return true;
-  }
-  //@notice bind function internal
-  function _bind(address _self,address _to) internal{
-      details[_self].recommender = _to;
-  }
+
 //抵押nft
 function depositNFT(uint256  _tokenId) external payable {
-
                 nftContract = IERC721(nft);
                 require(nftContract.ownerOf(_tokenId) == msg.sender, "You don't own this NFT");
                 NftLoasInfo memory newLoans;
@@ -134,7 +112,7 @@ function depositNFT(uint256  _tokenId) external payable {
                 newLoans.tokenId = _tokenId;
                 newLoans.loanTime = block.timestamp;
                 newLoans.flag = 1;
-                loans[msg.sender][nowNumer] = newLoans;
+                addToMapping(msg.sender,newLoans);
                 loansNumber[msg.sender] += 1;
                 nftContract.approve(address(this), _tokenId);
       
@@ -143,10 +121,11 @@ function depositNFT(uint256  _tokenId) external payable {
 function withdrawNFT(uint256 _tokenId) onlyManager external payable {
     nftContract = IERC721(nft);
     uint256 nowNumer = loansNumber[msg.sender];
+    NftLoasInfo[] memory list = getArray(msg.sender);
     for (uint i = 0; i < nowNumer; ++i ) {
-        if (loans[msg.sender][i].tokenId == _tokenId) {
-            require(loans[msg.sender][i].flag == 1, "You already have withdraw");   
-             loans[msg.sender][i].flag  = 0;
+        if (list[i].tokenId == _tokenId) {
+            require(list[i].flag == 1, "You already have withdraw");   
+             list[i].flag  = 0;
              nftContract.approve(msg.sender, _tokenId);
         }
     }
@@ -173,7 +152,13 @@ function loansCount(address user) public view returns (uint256){
     }
     return nowNumer;
 }
+function addToMapping(address key, NftLoasInfo memory value) public {
+        loans[key].push(value);
+    }
 
+function getArray(address key) public view returns (NftLoasInfo[] memory) {
+        return loans[key];
+    }
     modifier onlyManager() {
         require(
             msg.sender == owner,
