@@ -206,13 +206,13 @@ func getBenefit(acc model.Account) (types.BenefitInfo, error) {
 	cf := model.CovenantFlow{}
 	cf.AccountId = acc.ID
 	cf.ReleaseDate = getLastDay()
-	cfs, err := cf.GetByAccountIdAndReleaseDate(database.DB)
+	//cfs, err := cf.GetByAccountIdAndReleaseDate(database.DB)
 	if err != nil {
 		return data, err
 	}
-	for _, flow := range cfs {
-		data.LastDayBenefit += flow.Num
-	}
+	//for _, flow := range cfs {
+	//	data.LastDayBenefit += flow.Num //TODO
+	//}
 	return data, nil
 }
 func GetInviteeInfo(c *fiber.Ctx) error {

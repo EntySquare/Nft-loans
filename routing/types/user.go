@@ -84,9 +84,9 @@ type CovenantDetailReq struct {
 	Hash string `json:"hash"`
 }
 type CovenantDetail struct {
-	Time int64   `json:"time"`
-	Num  float64 `json:"num"`
-	Flag string  `json:"flag"`
+	Time int64  `json:"time"`
+	Num  string `json:"num"`
+	Flag string `json:"flag"`
 }
 type CovenantDetailResp struct {
 	List []CovenantDetail `json:"benefit_flows"`
