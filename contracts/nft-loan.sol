@@ -2,6 +2,7 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "./IERC721.sol";
 import "./IERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 // @author yueliyangzi
 contract ngt{
     string public  name;
@@ -32,22 +33,24 @@ contract ngt{
     }
 }
 // @author yueliyangzi
-contract NGT is ngt {
+contract NGT is ngt,IERC721Receiver{
     using SafeMathCell for uint256;
-    uint256 constant exchange_rate_usdt = 100000;
     address foundation;
     address  owner;
-    struct NftLoasInfo {
+     struct TokenData {
         uint256 tokenId;
-        uint loanTime;
-        uint256 flag;            
+        uint256 receivedTime;
+        uint256 flag;
     }
+
+    mapping(address => TokenData[]) public receivedTokens;
+
+    event TokenReceived(address indexed from, uint256 indexed tokenId, uint256 receivedTime);
+
     IERC721 public nftContract;
-    mapping (address => NftLoasInfo[]) public loans;
-    mapping (address => uint256) public loansNumber;
-    address nft;
-   
     
+   
+
      /* Initializes contract with initial supply tokens to the creator of the contract */
     //@notice Contract initial setting
      constructor(
@@ -58,7 +61,7 @@ contract NGT is ngt {
         name = "ONEE";                                      // Set the name for display purposes
         symbol = "ONEE";  
         owner = _owner;
-        nft = _nftContract;                                 // Set the symbol for display purposes
+        nftContract = IERC721(_nftContract);                                 // Set the symbol for display purposes
     }
     function transfer(address _to, uint256 _value) public payable  returns (bool success){
          uint256 tax = (_value * 0).div(100);
@@ -102,49 +105,46 @@ contract NGT is ngt {
         require(amount <= totalSupply);
         totalSupply -= amount;
   }     
-
-//抵押nft
-function depositNFT(uint256  _tokenId) external payable {
-                nftContract = IERC721(nft);
-                require(nftContract.ownerOf(_tokenId) == msg.sender, "You don't own this NFT");
-                NftLoasInfo memory newLoans;
-                uint256 nowNumer = loansNumber[msg.sender];
-                newLoans.tokenId = _tokenId;
-                newLoans.loanTime = block.timestamp;
-                newLoans.flag = 1;
-                addToMapping(msg.sender,newLoans);
-                loansNumber[msg.sender] += 1;
-                nftContract.approve(address(this), _tokenId);
-      
+function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data) external override returns(bytes4) {
+        // // tokenData[tokenId] = TokenData(from, block.timestamp);
+        //  NftLoas Info memory newLoans;
+        // //  uint256 nowNumer = loansNumber[from];
+        //  newLoans.tokenId = tokenId;
+        // //  newLoans.loanTime = block.timestamp;
+        // //  newLoans.flag = 1;
+        // //  loans[from][nowNumer] = newLoans;
+        // //  loansNumber[from] += 1;
+        receivedTokens[from].push(TokenData(tokenId, block.timestamp,1));
+        emit TokenReceived(from, tokenId, block.timestamp);
+        return this.onERC721Received.selector;
 }
+
 //赎回nft
-function withdrawNFT(uint256 _tokenId) onlyManager external payable {
-    nftContract = IERC721(nft);
-    uint256 nowNumer = loansNumber[msg.sender];
-    NftLoasInfo[] memory list = getArray(msg.sender);
-    for (uint i = 0; i < nowNumer; ++i ) {
-        if (list[i].tokenId == _tokenId) {
-            require(list[i].flag == 1, "You already have withdraw");   
-             list[i].flag  = 0;
-             nftContract.approve(msg.sender, _tokenId);
+function withdrawNFT(address to,uint256 _tokenId) onlyManager external payable {
+    for (uint i = 0; i < receivedTokens[to].length; ++i ) {
+        if (receivedTokens[to][i].tokenId == _tokenId) {
+            require(receivedTokens[to][i].flag == 1, "You already have withdraw");   
+            TokenData storage td = receivedTokens[to][i];
+             td.flag  = 0;
+             nftContract.transferFrom(address(this),to,_tokenId);
         }
     }
+    
    
 }
 function ownerOf(uint256  _tokenId) public returns (address){
-                nftContract = IERC721(nft);
+            
                 return nftContract.ownerOf(_tokenId);
       
 }
-function loansList(address user) public returns (NftLoasInfo[] memory){
-    nftContract = IERC721(nft);
+function loansList(address user) public view returns (TokenData[] memory){
     
-    return loans[user];
+    return receivedTokens[user];
 }
 function loansCount(address user) public view returns (uint256){
-    uint256 nowNumer = loansNumber[user];
-    for (uint i = 0; i < nowNumer; ++i ) {
-            if(loans[user][i].flag == 0){
+    uint256 nowNumer = receivedTokens[user].length;
+    for (uint i = 0; i < receivedTokens[user].length; ++i ) {
+            if(receivedTokens[user][i].flag == 0){
                 nowNumer--;
                 }
                  
@@ -152,13 +152,6 @@ function loansCount(address user) public view returns (uint256){
     }
     return nowNumer;
 }
-function addToMapping(address key, NftLoasInfo memory value) public {
-        loans[key].push(value);
-    }
-
-function getArray(address key) public view returns (NftLoasInfo[] memory) {
-        return loans[key];
-    }
     modifier onlyManager() {
         require(
             msg.sender == owner,
