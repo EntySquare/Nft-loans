@@ -9,13 +9,14 @@ contract NFTLoan {
         uint loanTime;
         uint256 flag;            
     }
-
     IERC721 public nftContract;
     mapping (address => NftLoasInfo[]) public loans;
     mapping (address => uint256) public loansNumber;
+    address nft;
     
-constructor(address _owner) {
+constructor(address _owner,address _nftContract) {
     owner = _owner;
+    nft = _nftContract;
     
 }
 // //生成通行卡
@@ -53,9 +54,9 @@ constructor(address _owner) {
 //         passcardApprovals[_cardId] = to;
 //     }
 //抵押nft
-function depositNFT(uint256  _tokenId,address _nftContract) external payable {
+function depositNFT(uint256  _tokenId) external payable {
 
-                nftContract = IERC721(_nftContract);
+                nftContract = IERC721(nft);
                 require(nftContract.ownerOf(_tokenId) == msg.sender, "You don't own this NFT");
                 NftLoasInfo memory newLoans;
                 uint256 nowNumer = loansNumber[msg.sender];
@@ -68,8 +69,8 @@ function depositNFT(uint256  _tokenId,address _nftContract) external payable {
       
 }
 //赎回nft
-function withdrawNFT(uint256 _tokenId,address _nftContract) external payable {
-    nftContract = IERC721(_nftContract);
+function withdrawNFT(uint256 _tokenId) onlyManager external payable {
+    nftContract = IERC721(nft);
     uint256 nowNumer = loansNumber[msg.sender];
     for (uint i = 0; i < nowNumer; ++i ) {
         if (loans[msg.sender][i].tokenId == _tokenId) {
@@ -80,20 +81,20 @@ function withdrawNFT(uint256 _tokenId,address _nftContract) external payable {
     }
    
 }
-function ownerOf(uint256  _tokenId,address _nftContract) public returns (address){
-                nftContract = IERC721(_nftContract);
+function ownerOf(uint256  _tokenId) public returns (address){
+                nftContract = IERC721(nft);
                 return nftContract.ownerOf(_tokenId);
       
 }
-function loansList(uint start,uint limit,address _nftContract) public returns (uint256[] memory){
-    nftContract = IERC721(_nftContract);
-    uint256 nowNumer = loansNumber[msg.sender];
+function loansList(uint start,uint limit,address user) public returns (uint256[] memory){
+    nftContract = IERC721(nft);
+    uint256 nowNumer = loansNumber[user];
     uint l = 0;
     uint256[] memory list;
     for (uint i = 0; i < nowNumer; ++i ) {
-            if(loans[msg.sender][i].flag == 1){
+            if(loans[user][i].flag == 1){
                 if (l >= start && l < start + limit){
-                list[l] = loans[msg.sender][i].tokenId;
+                list[l] = loans[user][i].tokenId;
                 l++;
                 }
                 if(l > start + limit){
@@ -104,10 +105,10 @@ function loansList(uint start,uint limit,address _nftContract) public returns (u
     }
     return list;
 }
-function loansCount() public returns (uint256){
-    uint256 nowNumer = loansNumber[msg.sender];
+function loansCount(address user) public view returns (uint256){
+    uint256 nowNumer = loansNumber[user];
     for (uint i = 0; i < nowNumer; ++i ) {
-            if(loans[msg.sender][i].flag == 0){
+            if(loans[user][i].flag == 0){
                 nowNumer--;
                 }
                  

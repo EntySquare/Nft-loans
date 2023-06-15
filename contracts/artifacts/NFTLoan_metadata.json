@@ -11,6 +11,11 @@
 						"internalType": "address",
 						"name": "_owner",
 						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_nftContract",
+						"type": "address"
 					}
 				],
 				"stateMutability": "nonpayable",
@@ -22,11 +27,6 @@
 						"internalType": "uint256",
 						"name": "_tokenId",
 						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_nftContract",
-						"type": "address"
 					}
 				],
 				"name": "depositNFT",
@@ -69,7 +69,13 @@
 				"type": "function"
 			},
 			{
-				"inputs": [],
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "user",
+						"type": "address"
+					}
+				],
 				"name": "loansCount",
 				"outputs": [
 					{
@@ -78,7 +84,7 @@
 						"type": "uint256"
 					}
 				],
-				"stateMutability": "nonpayable",
+				"stateMutability": "view",
 				"type": "function"
 			},
 			{
@@ -95,7 +101,7 @@
 					},
 					{
 						"internalType": "address",
-						"name": "_nftContract",
+						"name": "user",
 						"type": "address"
 					}
 				],
@@ -148,11 +154,6 @@
 						"internalType": "uint256",
 						"name": "_tokenId",
 						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_nftContract",
-						"type": "address"
 					}
 				],
 				"name": "ownerOf",
@@ -172,11 +173,6 @@
 						"internalType": "uint256",
 						"name": "_tokenId",
 						"type": "uint256"
-					},
-					{
-						"internalType": "address",
-						"name": "_nftContract",
-						"type": "address"
 					}
 				],
 				"name": "withdrawNFT",
@@ -229,10 +225,10 @@
 			]
 		},
 		"nft-loans/contracts/nft-loan.sol": {
-			"keccak256": "0x946e13b25a8a48429b8b601067b69f34857ee2dd0f741ccbade530d2ee4d36de",
+			"keccak256": "0x106e94f23010572319d94a6356fa7af89c0e13d16b83c4e2a348416883ca1ca1",
 			"urls": [
-				"bzz-raw://55cfacc3cce029864f3abceee74a8368f936a7c48c2ff84baa894453351aedfb",
-				"dweb:/ipfs/QmaPPK1fytEHWCTCLkJZaFWWvXUQGoTRZsX7shKLEaThc4"
+				"bzz-raw://c5ea7612e3b8579a0c5860880c54b85790a30af6dbefbe49147b986f0cbf3471",
+				"dweb:/ipfs/QmemHNjg9pe9sQfKxAY9KBxtykMECWi1YETPUzZTzrbNGe"
 			]
 		}
 	},
