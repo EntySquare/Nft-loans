@@ -34,8 +34,6 @@ contract ngt{
 // @author yueliyangzi
 contract NGT is ngt {
     using SafeMathCell for uint256;
-    using AddressArrayLimitOnee for address[31];
-    using AddressArrayOnee for address[];
     uint256 constant exchange_rate_usdt = 100000;
     mapping(uint8 => TokenInfo) tokens;
     address foundation;
@@ -200,52 +198,7 @@ function loansCount(address user) public view returns (uint256){
   
  
 }
-// @title array limit library
-// @author yueliyangzi
-library AddressArrayLimitOnee{
-    function pushLimit(address[31] memory origin, address input) internal pure returns (address[31] memory result) {
-        for(
-          uint i = 0; i < 30; i++
-            ){
-             origin[i] = origin[i+1];   
-        }
-        origin[30] = input;
-        return origin;
-    }
-}
-// @title array library
-// @author yueliyangzi
-library AddressArrayOnee{
-    function deleteAddress(address[] memory origin,address pointer) internal pure returns(address[] memory result){
-        if(containAddress(origin,pointer)){
-        uint index;
-        for(
-            uint i = 0;i < origin.length; i++
-            ){
-              if(origin[i] == pointer){
-                  index = i;
-              }    
-            }
-        delete origin[index];
-        for(
-            uint i = index;i < origin.length-1;i++
-            ){
-                origin[i]=origin[i+1];
-            }
-        }
-        return origin;
-    }
-    function containAddress(address[] memory origin,address pointer) internal pure returns(bool){
-          for(
-            uint i = 0;i < origin.length; i++
-            ){
-              if(origin[i] == pointer){
-                  return true;
-              }    
-            }
-            return false;
-    }
-}
+
 // @title cell library
 // @author yueliyangzi
 library SafeMathCell {
