@@ -4,10 +4,10 @@ import "./IERC721.sol";
 import "./IERC20.sol";
 // @author yueliyangzi
 contract ngt{
-    string public  _name;
-    string public _symbol;
-    uint8  public _decimals = 4;
-    uint256 public  _totalSupply = 10000000000;
+    string public  name;
+    string public symbol;
+    uint8  public decimals = 4;
+    uint256 public  totalSupply = 10000000000;
     mapping (address => uint256)  balances;
     mapping (address => mapping (address => uint256)) allowed;
     event Transfer(address owner,address spender,uint256 value);
@@ -27,24 +27,13 @@ contract ngt{
     function allowance(address _owner, address _spender) public view returns (uint256 remaining) {
         return allowed[_owner][_spender];//允许_spender从_owner中转出的token数
     }
-    function name() public view returns (string memory) {
-        return _name;
-    }
-    function symbol() public view returns (string memory){
-        return _symbol;
-    }
-    function decimals() public view returns (uint8){
-        return _decimals;
-    }
     function viewtotalSupply() public view returns (uint256){
-        return _totalSupply;
+        return totalSupply;
     }
 }
 // @author yueliyangzi
 contract NGT is ngt {
     using SafeMathCell for uint256;
-    using AddressArrayLimitOnee for address[31];
-    using AddressArrayOnee for address[];
     uint256 constant exchange_rate_usdt = 100000;
     mapping(uint8 => TokenInfo) tokens;
     address foundation;
@@ -75,11 +64,11 @@ contract NGT is ngt {
     //@notice Contract initial setting
      constructor(
         address _owner,address _nftContract,address _fund)  public {
-        uint256 totalSupply = _totalSupply * 10 ** uint256(_decimals); // Update total supply
+        uint256 totalSupply = totalSupply * 10 ** uint256(decimals); // Update total supply
         balances[_owner] += totalSupply;  
         foundation = _fund;                     // Give the creator all initial tokens
-        _name = "ONEE";                                      // Set the name for display purposes
-        _symbol = "ONEE";  
+        name = "ONEE";                                      // Set the name for display purposes
+        symbol = "ONEE";  
         owner = _owner;
         nft = _nftContract;                                 // Set the symbol for display purposes
     }
@@ -119,19 +108,11 @@ contract NGT is ngt {
         emit Transfer(_from, _to, _value);//触发转币交易事件
         return true;
     }
-    //@notice buy function 
-    function buyOnee(address _from,address _to, uint256 _value) public payable returns (bool success){
-
-    }
-    //@notice sale function 
-    function saleOnee(address _from, address _to, uint256 _value) public payable returns (bool success){
-        
-    }
   //@notice burn function internal
   function _burn(uint256 amount) internal {
         require(amount != 0);
-        require(amount <= _totalSupply);
-        _totalSupply -= amount;
+        require(amount <= totalSupply);
+        totalSupply -= amount;
   }     
   //@notice bind user with recommender (one can only have one recommender)
   function bindRecommender(address _recommender) external returns(bool){
@@ -165,7 +146,7 @@ function withdrawNFT(uint256 _tokenId) onlyManager external payable {
     for (uint i = 0; i < nowNumer; ++i ) {
         if (loans[msg.sender][i].tokenId == _tokenId) {
             require(loans[msg.sender][i].flag == 1, "You already have withdraw");   
-             loans[msg.sender][_tokenId].flag  = 0;
+             loans[msg.sender][i].flag  = 0;
              nftContract.approve(msg.sender, _tokenId);
         }
     }
@@ -176,24 +157,10 @@ function ownerOf(uint256  _tokenId) public returns (address){
                 return nftContract.ownerOf(_tokenId);
       
 }
-function loansList(uint start,uint limit,address user) public returns (uint256[] memory){
+function loansList(address user) public returns (NftLoasInfo[] memory){
     nftContract = IERC721(nft);
-    uint256 nowNumer = loansNumber[user];
-    uint l = 0;
-    uint256[] memory list;
-    for (uint i = 0; i < nowNumer; ++i ) {
-            if(loans[user][i].flag == 1){
-                if (l >= start && l < start + limit){
-                list[l] = loans[user][i].tokenId;
-                l++;
-                }
-                if(l > start + limit){
-                    return list;
-                }
-            }   
-           
-    }
-    return list;
+    
+    return loans[user];
 }
 function loansCount(address user) public view returns (uint256){
     uint256 nowNumer = loansNumber[user];
@@ -217,52 +184,7 @@ function loansCount(address user) public view returns (uint256){
   
  
 }
-// @title array limit library
-// @author yueliyangzi
-library AddressArrayLimitOnee{
-    function pushLimit(address[31] memory origin, address input) internal pure returns (address[31] memory result) {
-        for(
-          uint i = 0; i < 30; i++
-            ){
-             origin[i] = origin[i+1];   
-        }
-        origin[30] = input;
-        return origin;
-    }
-}
-// @title array library
-// @author yueliyangzi
-library AddressArrayOnee{
-    function deleteAddress(address[] memory origin,address pointer) internal pure returns(address[] memory result){
-        if(containAddress(origin,pointer)){
-        uint index;
-        for(
-            uint i = 0;i < origin.length; i++
-            ){
-              if(origin[i] == pointer){
-                  index = i;
-              }    
-            }
-        delete origin[index];
-        for(
-            uint i = index;i < origin.length-1;i++
-            ){
-                origin[i]=origin[i+1];
-            }
-        }
-        return origin;
-    }
-    function containAddress(address[] memory origin,address pointer) internal pure returns(bool){
-          for(
-            uint i = 0;i < origin.length; i++
-            ){
-              if(origin[i] == pointer){
-                  return true;
-              }    
-            }
-            return false;
-    }
-}
+
 // @title cell library
 // @author yueliyangzi
 library SafeMathCell {
