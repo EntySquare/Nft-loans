@@ -29,6 +29,9 @@ type Covenant struct {
 func NewCovenant(id int64) Covenant {
 	return Covenant{Model: gorm.Model{ID: uint(id)}}
 }
+func NewCovenant2(id uint) Covenant {
+	return Covenant{Model: gorm.Model{ID: id}}
+}
 
 func (c *Covenant) GetById(db *gorm.DB) error {
 	return db.First(&c, c.ID).Error
@@ -68,4 +71,10 @@ func (c *Covenant) GetUserAccumulatedBenefit(db *gorm.DB) (float64, error) {
 	} else {
 		return 0, err
 	}
+}
+
+func SelectMyCovenantByFlag(db *gorm.DB, flag string) (cs []Covenant, err error) {
+	cs = make([]Covenant, 0)
+	err = db.Model(&Covenant{}).Where("flag = ?", flag).Find(&cs).Error
+	return cs, err
 }
