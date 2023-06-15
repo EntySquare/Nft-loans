@@ -213,17 +213,17 @@ contract ERC721 is IERC721, IERC721Metadata{
         uint tokenId,
         bytes memory _data
     ) private returns (bool) {
-        if (to.isContract) {
-            return
+      
+        
             IERC721Receiver(to).onERC721Received(
                 msg.sender,
                 from,
                 tokenId,
                 _data
             ) == IERC721Receiver.onERC721Received.selector;
-        } else {
+        
             return true;
-        }
+        
     }
 
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
