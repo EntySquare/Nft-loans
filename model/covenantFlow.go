@@ -10,7 +10,7 @@ type CovenantFlow struct {
 	AccountId   uint
 	CovenantId  uint
 	Covenant    Covenant
-	Num         float64
+	Num         string //释放数量
 	ReleaseDate int64
 	Flag        string // 启用标志(0-未释放 1-已释放)
 }
