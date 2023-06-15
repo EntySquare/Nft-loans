@@ -4,10 +4,10 @@ import "./IERC721.sol";
 import "./IERC20.sol";
 // @author yueliyangzi
 contract ngt{
-    string public  _name;
-    string public _symbol;
-    uint8  public _decimals = 4;
-    uint256 public  _totalSupply = 10000000000;
+    string public  name;
+    string public symbol;
+    uint8  public decimals = 4;
+    uint256 public  totalSupply = 10000000000;
     mapping (address => uint256)  balances;
     mapping (address => mapping (address => uint256)) allowed;
     event Transfer(address owner,address spender,uint256 value);
@@ -27,17 +27,8 @@ contract ngt{
     function allowance(address _owner, address _spender) public view returns (uint256 remaining) {
         return allowed[_owner][_spender];//允许_spender从_owner中转出的token数
     }
-    function name() public view returns (string memory) {
-        return _name;
-    }
-    function symbol() public view returns (string memory){
-        return _symbol;
-    }
-    function decimals() public view returns (uint8){
-        return _decimals;
-    }
     function viewtotalSupply() public view returns (uint256){
-        return _totalSupply;
+        return totalSupply;
     }
 }
 // @author yueliyangzi
@@ -75,11 +66,11 @@ contract NGT is ngt {
     //@notice Contract initial setting
      constructor(
         address _owner,address _nftContract,address _fund)  public {
-        uint256 totalSupply = _totalSupply * 10 ** uint256(_decimals); // Update total supply
+        uint256 totalSupply = totalSupply * 10 ** uint256(decimals); // Update total supply
         balances[_owner] += totalSupply;  
         foundation = _fund;                     // Give the creator all initial tokens
-        _name = "ONEE";                                      // Set the name for display purposes
-        _symbol = "ONEE";  
+        name = "ONEE";                                      // Set the name for display purposes
+        symbol = "ONEE";  
         owner = _owner;
         nft = _nftContract;                                 // Set the symbol for display purposes
     }
@@ -119,19 +110,11 @@ contract NGT is ngt {
         emit Transfer(_from, _to, _value);//触发转币交易事件
         return true;
     }
-    //@notice buy function 
-    function buyOnee(address _from,address _to, uint256 _value) public payable returns (bool success){
-
-    }
-    //@notice sale function 
-    function saleOnee(address _from, address _to, uint256 _value) public payable returns (bool success){
-        
-    }
   //@notice burn function internal
   function _burn(uint256 amount) internal {
         require(amount != 0);
-        require(amount <= _totalSupply);
-        _totalSupply -= amount;
+        require(amount <= totalSupply);
+        totalSupply -= amount;
   }     
   //@notice bind user with recommender (one can only have one recommender)
   function bindRecommender(address _recommender) external returns(bool){
@@ -148,14 +131,14 @@ function depositNFT(uint256  _tokenId) external payable {
 
                 nftContract = IERC721(nft);
                 require(nftContract.ownerOf(_tokenId) == msg.sender, "You don't own this NFT");
-                NftLoasInfo memory newLoans;
-                uint256 nowNumer = loansNumber[msg.sender];
-                newLoans.tokenId = _tokenId;
-                newLoans.loanTime = block.timestamp;
-                newLoans.flag = 1;
-                loans[msg.sender][nowNumer] = newLoans;
-                loansNumber[msg.sender] += 1;
-                nftContract.approve(address(this), _tokenId);
+                // NftLoasInfo memory newLoans;
+                // uint256 nowNumer = loansNumber[msg.sender];
+                // newLoans.tokenId = _tokenId;
+                // newLoans.loanTime = block.timestamp;
+                // newLoans.flag = 1;
+                // loans[msg.sender][nowNumer] = newLoans;
+                // loansNumber[msg.sender] += 1;
+                // nftContract.approve(address(this), _tokenId);
       
 }
 //赎回nft
