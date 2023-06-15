@@ -216,6 +216,14 @@
 				"dweb:/ipfs/QmYZPJhJA4D51bwFJwj852PRkzBxxYozoVd1wXj8exV6LA"
 			]
 		},
+		"nft-loans/contracts/IERC20.sol": {
+			"keccak256": "0x061f8ccc4d7f566336ef5521735e6c2a051495d48abaef455fab9bc7fc029402",
+			"license": "GPL-3.0",
+			"urls": [
+				"bzz-raw://7de59b9472f5f70a403386c0a76a79c1c63a7b6851da647f8079290461a8fdd4",
+				"dweb:/ipfs/QmWii7JjjexU9caTTfuZyQYvLV1z4HrMVccZuaM3m3cWGZ"
+			]
+		},
 		"nft-loans/contracts/IERC721.sol": {
 			"keccak256": "0x058d83ed9ddf262be884a28e3d9ec79769b4bb2462a00faa1c6cdca1c571768e",
 			"license": "MIT",
@@ -225,10 +233,10 @@
 			]
 		},
 		"nft-loans/contracts/nft-loan.sol": {
-			"keccak256": "0x106e94f23010572319d94a6356fa7af89c0e13d16b83c4e2a348416883ca1ca1",
+			"keccak256": "0x35571598e8199e6fdb4f3df9a8be7eb7bd93915cff7a52e3da730e0f3e90cb1e",
 			"urls": [
-				"bzz-raw://c5ea7612e3b8579a0c5860880c54b85790a30af6dbefbe49147b986f0cbf3471",
-				"dweb:/ipfs/QmemHNjg9pe9sQfKxAY9KBxtykMECWi1YETPUzZTzrbNGe"
+				"bzz-raw://82b6aee30720cbf9d71055fe8958b386244e19cbea709526741680b765553cf8",
+				"dweb:/ipfs/QmavdwSXaLQZLSVJ6zje2rxRHtijoZNnhPhSiKSFPEqtEq"
 			]
 		}
 	},
