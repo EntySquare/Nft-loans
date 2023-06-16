@@ -29,16 +29,16 @@ var (
 	_ = abi.ConvertType
 )
 
-// NGTNftLoasInfo is an auto generated low-level Go binding around an user-defined struct.
-type NGTNftLoasInfo struct {
-	TokenId  *big.Int
-	LoanTime *big.Int
-	Flag     *big.Int
+// NGTTokenData is an auto generated low-level Go binding around an user-defined struct.
+type NGTTokenData struct {
+	TokenId      *big.Int
+	ReceivedTime *big.Int
+	Flag         *big.Int
 }
 
 // ContractsMetaData contains all meta data concerning the Contracts contract.
 var ContractsMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_nftContract\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_fund\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"status\",\"type\":\"uint8\"}],\"name\":\"ChangeMarketStatusEvent\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"remaining\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_recommender\",\"type\":\"address\"}],\"name\":\"bindRecommender\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"depositNFT\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"loans\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"loanTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"flag\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"loansCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"loansList\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"loanTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"flag\",\"type\":\"uint256\"}],\"internalType\":\"structNGT.NftLoasInfo[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"loansNumber\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"nftContract\",\"outputs\":[{\"internalType\":\"contractIERC721\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"ownerOf\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"viewtotalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"withdrawNFT\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_nftContract\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_fund\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint8\",\"name\":\"status\",\"type\":\"uint8\"}],\"name\":\"ChangeMarketStatusEvent\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"receivedTime\",\"type\":\"uint256\"}],\"name\":\"TokenReceived\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_spender\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"remaining\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_owner\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"balance\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"loansCount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"}],\"name\":\"loansList\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"receivedTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"flag\",\"type\":\"uint256\"}],\"internalType\":\"structNGT.TokenData[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"nftContract\",\"outputs\":[{\"internalType\":\"contractIERC721\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"onERC721Received\",\"outputs\":[{\"internalType\":\"bytes4\",\"name\":\"\",\"type\":\"bytes4\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"ownerOf\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"receivedTokens\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"receivedTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"flag\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_value\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"success\",\"type\":\"bool\"}],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"viewtotalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_tokenId\",\"type\":\"uint256\"}],\"name\":\"withdrawNFT\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}]",
 }
 
 // ContractsABI is the input ABI used to generate the binding from.
@@ -280,56 +280,6 @@ func (_Contracts *ContractsCallerSession) Decimals() (uint8, error) {
 	return _Contracts.Contract.Decimals(&_Contracts.CallOpts)
 }
 
-// Loans is a free data retrieval call binding the contract method 0x98c61c37.
-//
-// Solidity: function loans(address , uint256 ) view returns(uint256 tokenId, uint256 loanTime, uint256 flag)
-func (_Contracts *ContractsCaller) Loans(opts *bind.CallOpts, arg0 common.Address, arg1 *big.Int) (struct {
-	TokenId  *big.Int
-	LoanTime *big.Int
-	Flag     *big.Int
-}, error) {
-	var out []interface{}
-	err := _Contracts.contract.Call(opts, &out, "loans", arg0, arg1)
-
-	outstruct := new(struct {
-		TokenId  *big.Int
-		LoanTime *big.Int
-		Flag     *big.Int
-	})
-	if err != nil {
-		return *outstruct, err
-	}
-
-	outstruct.TokenId = *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-	outstruct.LoanTime = *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
-	outstruct.Flag = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
-
-	return *outstruct, err
-
-}
-
-// Loans is a free data retrieval call binding the contract method 0x98c61c37.
-//
-// Solidity: function loans(address , uint256 ) view returns(uint256 tokenId, uint256 loanTime, uint256 flag)
-func (_Contracts *ContractsSession) Loans(arg0 common.Address, arg1 *big.Int) (struct {
-	TokenId  *big.Int
-	LoanTime *big.Int
-	Flag     *big.Int
-}, error) {
-	return _Contracts.Contract.Loans(&_Contracts.CallOpts, arg0, arg1)
-}
-
-// Loans is a free data retrieval call binding the contract method 0x98c61c37.
-//
-// Solidity: function loans(address , uint256 ) view returns(uint256 tokenId, uint256 loanTime, uint256 flag)
-func (_Contracts *ContractsCallerSession) Loans(arg0 common.Address, arg1 *big.Int) (struct {
-	TokenId  *big.Int
-	LoanTime *big.Int
-	Flag     *big.Int
-}, error) {
-	return _Contracts.Contract.Loans(&_Contracts.CallOpts, arg0, arg1)
-}
-
 // LoansCount is a free data retrieval call binding the contract method 0xffc49f38.
 //
 // Solidity: function loansCount(address user) view returns(uint256)
@@ -361,35 +311,35 @@ func (_Contracts *ContractsCallerSession) LoansCount(user common.Address) (*big.
 	return _Contracts.Contract.LoansCount(&_Contracts.CallOpts, user)
 }
 
-// LoansNumber is a free data retrieval call binding the contract method 0xb369ecd7.
+// LoansList is a free data retrieval call binding the contract method 0x27d88a78.
 //
-// Solidity: function loansNumber(address ) view returns(uint256)
-func (_Contracts *ContractsCaller) LoansNumber(opts *bind.CallOpts, arg0 common.Address) (*big.Int, error) {
+// Solidity: function loansList(address user) view returns((uint256,uint256,uint256)[])
+func (_Contracts *ContractsCaller) LoansList(opts *bind.CallOpts, user common.Address) ([]NGTTokenData, error) {
 	var out []interface{}
-	err := _Contracts.contract.Call(opts, &out, "loansNumber", arg0)
+	err := _Contracts.contract.Call(opts, &out, "loansList", user)
 
 	if err != nil {
-		return *new(*big.Int), err
+		return *new([]NGTTokenData), err
 	}
 
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+	out0 := *abi.ConvertType(out[0], new([]NGTTokenData)).(*[]NGTTokenData)
 
 	return out0, err
 
 }
 
-// LoansNumber is a free data retrieval call binding the contract method 0xb369ecd7.
+// LoansList is a free data retrieval call binding the contract method 0x27d88a78.
 //
-// Solidity: function loansNumber(address ) view returns(uint256)
-func (_Contracts *ContractsSession) LoansNumber(arg0 common.Address) (*big.Int, error) {
-	return _Contracts.Contract.LoansNumber(&_Contracts.CallOpts, arg0)
+// Solidity: function loansList(address user) view returns((uint256,uint256,uint256)[])
+func (_Contracts *ContractsSession) LoansList(user common.Address) ([]NGTTokenData, error) {
+	return _Contracts.Contract.LoansList(&_Contracts.CallOpts, user)
 }
 
-// LoansNumber is a free data retrieval call binding the contract method 0xb369ecd7.
+// LoansList is a free data retrieval call binding the contract method 0x27d88a78.
 //
-// Solidity: function loansNumber(address ) view returns(uint256)
-func (_Contracts *ContractsCallerSession) LoansNumber(arg0 common.Address) (*big.Int, error) {
-	return _Contracts.Contract.LoansNumber(&_Contracts.CallOpts, arg0)
+// Solidity: function loansList(address user) view returns((uint256,uint256,uint256)[])
+func (_Contracts *ContractsCallerSession) LoansList(user common.Address) ([]NGTTokenData, error) {
+	return _Contracts.Contract.LoansList(&_Contracts.CallOpts, user)
 }
 
 // Name is a free data retrieval call binding the contract method 0x06fdde03.
@@ -452,6 +402,56 @@ func (_Contracts *ContractsSession) NftContract() (common.Address, error) {
 // Solidity: function nftContract() view returns(address)
 func (_Contracts *ContractsCallerSession) NftContract() (common.Address, error) {
 	return _Contracts.Contract.NftContract(&_Contracts.CallOpts)
+}
+
+// ReceivedTokens is a free data retrieval call binding the contract method 0xf8fe54fa.
+//
+// Solidity: function receivedTokens(address , uint256 ) view returns(uint256 tokenId, uint256 receivedTime, uint256 flag)
+func (_Contracts *ContractsCaller) ReceivedTokens(opts *bind.CallOpts, arg0 common.Address, arg1 *big.Int) (struct {
+	TokenId      *big.Int
+	ReceivedTime *big.Int
+	Flag         *big.Int
+}, error) {
+	var out []interface{}
+	err := _Contracts.contract.Call(opts, &out, "receivedTokens", arg0, arg1)
+
+	outstruct := new(struct {
+		TokenId      *big.Int
+		ReceivedTime *big.Int
+		Flag         *big.Int
+	})
+	if err != nil {
+		return *outstruct, err
+	}
+
+	outstruct.TokenId = *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+	outstruct.ReceivedTime = *abi.ConvertType(out[1], new(*big.Int)).(**big.Int)
+	outstruct.Flag = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
+
+	return *outstruct, err
+
+}
+
+// ReceivedTokens is a free data retrieval call binding the contract method 0xf8fe54fa.
+//
+// Solidity: function receivedTokens(address , uint256 ) view returns(uint256 tokenId, uint256 receivedTime, uint256 flag)
+func (_Contracts *ContractsSession) ReceivedTokens(arg0 common.Address, arg1 *big.Int) (struct {
+	TokenId      *big.Int
+	ReceivedTime *big.Int
+	Flag         *big.Int
+}, error) {
+	return _Contracts.Contract.ReceivedTokens(&_Contracts.CallOpts, arg0, arg1)
+}
+
+// ReceivedTokens is a free data retrieval call binding the contract method 0xf8fe54fa.
+//
+// Solidity: function receivedTokens(address , uint256 ) view returns(uint256 tokenId, uint256 receivedTime, uint256 flag)
+func (_Contracts *ContractsCallerSession) ReceivedTokens(arg0 common.Address, arg1 *big.Int) (struct {
+	TokenId      *big.Int
+	ReceivedTime *big.Int
+	Flag         *big.Int
+}, error) {
+	return _Contracts.Contract.ReceivedTokens(&_Contracts.CallOpts, arg0, arg1)
 }
 
 // Symbol is a free data retrieval call binding the contract method 0x95d89b41.
@@ -568,67 +568,25 @@ func (_Contracts *ContractsTransactorSession) Approve(_spender common.Address, _
 	return _Contracts.Contract.Approve(&_Contracts.TransactOpts, _spender, _value)
 }
 
-// BindRecommender is a paid mutator transaction binding the contract method 0x48828ec0.
+// OnERC721Received is a paid mutator transaction binding the contract method 0x150b7a02.
 //
-// Solidity: function bindRecommender(address _recommender) returns(bool)
-func (_Contracts *ContractsTransactor) BindRecommender(opts *bind.TransactOpts, _recommender common.Address) (*types.Transaction, error) {
-	return _Contracts.contract.Transact(opts, "bindRecommender", _recommender)
+// Solidity: function onERC721Received(address operator, address from, uint256 tokenId, bytes data) returns(bytes4)
+func (_Contracts *ContractsTransactor) OnERC721Received(opts *bind.TransactOpts, operator common.Address, from common.Address, tokenId *big.Int, data []byte) (*types.Transaction, error) {
+	return _Contracts.contract.Transact(opts, "onERC721Received", operator, from, tokenId, data)
 }
 
-// BindRecommender is a paid mutator transaction binding the contract method 0x48828ec0.
+// OnERC721Received is a paid mutator transaction binding the contract method 0x150b7a02.
 //
-// Solidity: function bindRecommender(address _recommender) returns(bool)
-func (_Contracts *ContractsSession) BindRecommender(_recommender common.Address) (*types.Transaction, error) {
-	return _Contracts.Contract.BindRecommender(&_Contracts.TransactOpts, _recommender)
+// Solidity: function onERC721Received(address operator, address from, uint256 tokenId, bytes data) returns(bytes4)
+func (_Contracts *ContractsSession) OnERC721Received(operator common.Address, from common.Address, tokenId *big.Int, data []byte) (*types.Transaction, error) {
+	return _Contracts.Contract.OnERC721Received(&_Contracts.TransactOpts, operator, from, tokenId, data)
 }
 
-// BindRecommender is a paid mutator transaction binding the contract method 0x48828ec0.
+// OnERC721Received is a paid mutator transaction binding the contract method 0x150b7a02.
 //
-// Solidity: function bindRecommender(address _recommender) returns(bool)
-func (_Contracts *ContractsTransactorSession) BindRecommender(_recommender common.Address) (*types.Transaction, error) {
-	return _Contracts.Contract.BindRecommender(&_Contracts.TransactOpts, _recommender)
-}
-
-// DepositNFT is a paid mutator transaction binding the contract method 0xe91a7ca6.
-//
-// Solidity: function depositNFT(uint256 _tokenId) payable returns()
-func (_Contracts *ContractsTransactor) DepositNFT(opts *bind.TransactOpts, _tokenId *big.Int) (*types.Transaction, error) {
-	return _Contracts.contract.Transact(opts, "depositNFT", _tokenId)
-}
-
-// DepositNFT is a paid mutator transaction binding the contract method 0xe91a7ca6.
-//
-// Solidity: function depositNFT(uint256 _tokenId) payable returns()
-func (_Contracts *ContractsSession) DepositNFT(_tokenId *big.Int) (*types.Transaction, error) {
-	return _Contracts.Contract.DepositNFT(&_Contracts.TransactOpts, _tokenId)
-}
-
-// DepositNFT is a paid mutator transaction binding the contract method 0xe91a7ca6.
-//
-// Solidity: function depositNFT(uint256 _tokenId) payable returns()
-func (_Contracts *ContractsTransactorSession) DepositNFT(_tokenId *big.Int) (*types.Transaction, error) {
-	return _Contracts.Contract.DepositNFT(&_Contracts.TransactOpts, _tokenId)
-}
-
-// LoansList is a paid mutator transaction binding the contract method 0x27d88a78.
-//
-// Solidity: function loansList(address user) returns((uint256,uint256,uint256)[])
-func (_Contracts *ContractsTransactor) LoansList(opts *bind.TransactOpts, user common.Address) (*types.Transaction, error) {
-	return _Contracts.contract.Transact(opts, "loansList", user)
-}
-
-// LoansList is a paid mutator transaction binding the contract method 0x27d88a78.
-//
-// Solidity: function loansList(address user) returns((uint256,uint256,uint256)[])
-func (_Contracts *ContractsSession) LoansList(user common.Address) (*types.Transaction, error) {
-	return _Contracts.Contract.LoansList(&_Contracts.TransactOpts, user)
-}
-
-// LoansList is a paid mutator transaction binding the contract method 0x27d88a78.
-//
-// Solidity: function loansList(address user) returns((uint256,uint256,uint256)[])
-func (_Contracts *ContractsTransactorSession) LoansList(user common.Address) (*types.Transaction, error) {
-	return _Contracts.Contract.LoansList(&_Contracts.TransactOpts, user)
+// Solidity: function onERC721Received(address operator, address from, uint256 tokenId, bytes data) returns(bytes4)
+func (_Contracts *ContractsTransactorSession) OnERC721Received(operator common.Address, from common.Address, tokenId *big.Int, data []byte) (*types.Transaction, error) {
+	return _Contracts.Contract.OnERC721Received(&_Contracts.TransactOpts, operator, from, tokenId, data)
 }
 
 // OwnerOf is a paid mutator transaction binding the contract method 0x6352211e.
@@ -694,25 +652,25 @@ func (_Contracts *ContractsTransactorSession) TransferFrom(_from common.Address,
 	return _Contracts.Contract.TransferFrom(&_Contracts.TransactOpts, _from, _to, _value)
 }
 
-// WithdrawNFT is a paid mutator transaction binding the contract method 0x023245d7.
+// WithdrawNFT is a paid mutator transaction binding the contract method 0x6088e93a.
 //
-// Solidity: function withdrawNFT(uint256 _tokenId) payable returns()
-func (_Contracts *ContractsTransactor) WithdrawNFT(opts *bind.TransactOpts, _tokenId *big.Int) (*types.Transaction, error) {
-	return _Contracts.contract.Transact(opts, "withdrawNFT", _tokenId)
+// Solidity: function withdrawNFT(address to, uint256 _tokenId) payable returns()
+func (_Contracts *ContractsTransactor) WithdrawNFT(opts *bind.TransactOpts, to common.Address, _tokenId *big.Int) (*types.Transaction, error) {
+	return _Contracts.contract.Transact(opts, "withdrawNFT", to, _tokenId)
 }
 
-// WithdrawNFT is a paid mutator transaction binding the contract method 0x023245d7.
+// WithdrawNFT is a paid mutator transaction binding the contract method 0x6088e93a.
 //
-// Solidity: function withdrawNFT(uint256 _tokenId) payable returns()
-func (_Contracts *ContractsSession) WithdrawNFT(_tokenId *big.Int) (*types.Transaction, error) {
-	return _Contracts.Contract.WithdrawNFT(&_Contracts.TransactOpts, _tokenId)
+// Solidity: function withdrawNFT(address to, uint256 _tokenId) payable returns()
+func (_Contracts *ContractsSession) WithdrawNFT(to common.Address, _tokenId *big.Int) (*types.Transaction, error) {
+	return _Contracts.Contract.WithdrawNFT(&_Contracts.TransactOpts, to, _tokenId)
 }
 
-// WithdrawNFT is a paid mutator transaction binding the contract method 0x023245d7.
+// WithdrawNFT is a paid mutator transaction binding the contract method 0x6088e93a.
 //
-// Solidity: function withdrawNFT(uint256 _tokenId) payable returns()
-func (_Contracts *ContractsTransactorSession) WithdrawNFT(_tokenId *big.Int) (*types.Transaction, error) {
-	return _Contracts.Contract.WithdrawNFT(&_Contracts.TransactOpts, _tokenId)
+// Solidity: function withdrawNFT(address to, uint256 _tokenId) payable returns()
+func (_Contracts *ContractsTransactorSession) WithdrawNFT(to common.Address, _tokenId *big.Int) (*types.Transaction, error) {
+	return _Contracts.Contract.WithdrawNFT(&_Contracts.TransactOpts, to, _tokenId)
 }
 
 // ContractsApprovalIterator is returned from FilterApproval and is used to iterate over the raw logs and unpacked data for Approval events raised by the Contracts contract.
@@ -979,6 +937,160 @@ func (_Contracts *ContractsFilterer) WatchChangeMarketStatusEvent(opts *bind.Wat
 func (_Contracts *ContractsFilterer) ParseChangeMarketStatusEvent(log types.Log) (*ContractsChangeMarketStatusEvent, error) {
 	event := new(ContractsChangeMarketStatusEvent)
 	if err := _Contracts.contract.UnpackLog(event, "ChangeMarketStatusEvent", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// ContractsTokenReceivedIterator is returned from FilterTokenReceived and is used to iterate over the raw logs and unpacked data for TokenReceived events raised by the Contracts contract.
+type ContractsTokenReceivedIterator struct {
+	Event *ContractsTokenReceived // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *ContractsTokenReceivedIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(ContractsTokenReceived)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(ContractsTokenReceived)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *ContractsTokenReceivedIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *ContractsTokenReceivedIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// ContractsTokenReceived represents a TokenReceived event raised by the Contracts contract.
+type ContractsTokenReceived struct {
+	From         common.Address
+	TokenId      *big.Int
+	ReceivedTime *big.Int
+	Raw          types.Log // Blockchain specific contextual infos
+}
+
+// FilterTokenReceived is a free log retrieval operation binding the contract event 0xcbd44b327242a19152f06fd696fc88ca79d777e3de08a110708838867427bd51.
+//
+// Solidity: event TokenReceived(address indexed from, uint256 indexed tokenId, uint256 receivedTime)
+func (_Contracts *ContractsFilterer) FilterTokenReceived(opts *bind.FilterOpts, from []common.Address, tokenId []*big.Int) (*ContractsTokenReceivedIterator, error) {
+
+	var fromRule []interface{}
+	for _, fromItem := range from {
+		fromRule = append(fromRule, fromItem)
+	}
+	var tokenIdRule []interface{}
+	for _, tokenIdItem := range tokenId {
+		tokenIdRule = append(tokenIdRule, tokenIdItem)
+	}
+
+	logs, sub, err := _Contracts.contract.FilterLogs(opts, "TokenReceived", fromRule, tokenIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return &ContractsTokenReceivedIterator{contract: _Contracts.contract, event: "TokenReceived", logs: logs, sub: sub}, nil
+}
+
+// WatchTokenReceived is a free log subscription operation binding the contract event 0xcbd44b327242a19152f06fd696fc88ca79d777e3de08a110708838867427bd51.
+//
+// Solidity: event TokenReceived(address indexed from, uint256 indexed tokenId, uint256 receivedTime)
+func (_Contracts *ContractsFilterer) WatchTokenReceived(opts *bind.WatchOpts, sink chan<- *ContractsTokenReceived, from []common.Address, tokenId []*big.Int) (event.Subscription, error) {
+
+	var fromRule []interface{}
+	for _, fromItem := range from {
+		fromRule = append(fromRule, fromItem)
+	}
+	var tokenIdRule []interface{}
+	for _, tokenIdItem := range tokenId {
+		tokenIdRule = append(tokenIdRule, tokenIdItem)
+	}
+
+	logs, sub, err := _Contracts.contract.WatchLogs(opts, "TokenReceived", fromRule, tokenIdRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(ContractsTokenReceived)
+				if err := _Contracts.contract.UnpackLog(event, "TokenReceived", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseTokenReceived is a log parse operation binding the contract event 0xcbd44b327242a19152f06fd696fc88ca79d777e3de08a110708838867427bd51.
+//
+// Solidity: event TokenReceived(address indexed from, uint256 indexed tokenId, uint256 receivedTime)
+func (_Contracts *ContractsFilterer) ParseTokenReceived(log types.Log) (*ContractsTokenReceived, error) {
+	event := new(ContractsTokenReceived)
+	if err := _Contracts.contract.UnpackLog(event, "TokenReceived", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

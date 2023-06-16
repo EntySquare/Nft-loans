@@ -2,6 +2,7 @@ pragma solidity >=0.8.0 <0.9.0;
 
 import "./IERC721.sol";
 import "./IERC20.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 // @author yueliyangzi
 contract ngt{
     string public  name;
@@ -32,34 +33,24 @@ contract ngt{
     }
 }
 // @author yueliyangzi
-contract NGT is ngt {
+contract NGT is ngt,IERC721Receiver{
     using SafeMathCell for uint256;
-    uint256 constant exchange_rate_usdt = 100000;
-    mapping(uint8 => TokenInfo) tokens;
     address foundation;
-    mapping (address => AddressStatus) details;
-    struct TokenInfo{
-        string token_name;
-        address token_address;
-        uint256 exchange_rate; 
-    }
-    struct AddressStatus{
-        uint256 locked_balances;
-        uint256 avilable_balances;
-        address recommender;
-    }
     address  owner;
-    struct NftLoasInfo {
+     struct TokenData {
         uint256 tokenId;
-        uint loanTime;
-        uint256 flag;            
+        uint256 receivedTime;
+        uint256 flag;
     }
+
+    mapping(address => TokenData[]) public receivedTokens;
+
+    event TokenReceived(address indexed from, uint256 indexed tokenId, uint256 receivedTime);
+
     IERC721 public nftContract;
-    mapping (address => NftLoasInfo[]) public loans;
-    mapping (address => uint256) public loansNumber;
-    address nft;
-   
     
+   
+
      /* Initializes contract with initial supply tokens to the creator of the contract */
     //@notice Contract initial setting
      constructor(
@@ -70,7 +61,7 @@ contract NGT is ngt {
         name = "ONEE";                                      // Set the name for display purposes
         symbol = "ONEE";  
         owner = _owner;
-        nft = _nftContract;                                 // Set the symbol for display purposes
+        nftContract = IERC721(_nftContract);                                 // Set the symbol for display purposes
     }
     function transfer(address _to, uint256 _value) public payable  returns (bool success){
          uint256 tax = (_value * 0).div(100);
@@ -87,11 +78,11 @@ contract NGT is ngt {
     }
     function _transfer(address _to, uint256 _value,uint256 tax) internal returns (bool success){
         require(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to],"Insufficient funds");
-        require(details[msg.sender].avilable_balances >= _value,"Insufficient funds");
+        
         balances[msg.sender] -= _value;//从消息发送者账户中减去token数量_value      
-        details[msg.sender].avilable_balances -= _value;
+        
         balances[_to] += _value.sub(tax);//往接收账户增加token数量_value
-        details[_to].avilable_balances += _value.sub(tax);
+       
         emit Transfer(msg.sender, _to, _value);//触发转币交易事件
        
         return true;
@@ -99,11 +90,11 @@ contract NGT is ngt {
     function _transferFrom(address _from, address _to, uint256 _value,uint256 tax) internal returns 
     (bool success) {
         require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value,"Insufficient funds");
-        require(details[_from].avilable_balances >= _value,"Insufficient funds");
+       
         balances[_from] -= _value; //支出账户_from减去token数量_value
-        details[_from].avilable_balances -= _value;
+        
         balances[_to] += _value.sub(tax);//接收账户增加token数量_value
-        details[_to].avilable_balances += _value.sub(tax);
+       
         allowed[_from][msg.sender] -= _value;//消息发送者可以从账户_from中转出的数量减少_value
         emit Transfer(_from, _to, _value);//触发转币交易事件
         return true;
@@ -114,58 +105,46 @@ contract NGT is ngt {
         require(amount <= totalSupply);
         totalSupply -= amount;
   }     
-  //@notice bind user with recommender (one can only have one recommender)
-  function bindRecommender(address _recommender) external returns(bool){
-      require(details[msg.sender].recommender == address(0),"this address has been bound");
-      _bind(msg.sender,_recommender);
-      return true;
-  }
-  //@notice bind function internal
-  function _bind(address _self,address _to) internal{
-      details[_self].recommender = _to;
-  }
-//抵押nft
-function depositNFT(uint256  _tokenId) external payable {
-
-                nftContract = IERC721(nft);
-                require(nftContract.ownerOf(_tokenId) == msg.sender, "You don't own this NFT");
-                NftLoasInfo memory newLoans;
-                uint256 nowNumer = loansNumber[msg.sender];
-                newLoans.tokenId = _tokenId;
-                newLoans.loanTime = block.timestamp;
-                newLoans.flag = 1;
-                loans[msg.sender][nowNumer] = newLoans;
-                loansNumber[msg.sender] += 1;
-                nftContract.approve(address(this), _tokenId);
-      
+function onERC721Received(address operator, address from, uint256 tokenId, bytes calldata data) external override returns(bytes4) {
+        // // tokenData[tokenId] = TokenData(from, block.timestamp);
+        //  NftLoas Info memory newLoans;
+        // //  uint256 nowNumer = loansNumber[from];
+        //  newLoans.tokenId = tokenId;
+        // //  newLoans.loanTime = block.timestamp;
+        // //  newLoans.flag = 1;
+        // //  loans[from][nowNumer] = newLoans;
+        // //  loansNumber[from] += 1;
+        receivedTokens[from].push(TokenData(tokenId, block.timestamp,1));
+        emit TokenReceived(from, tokenId, block.timestamp);
+        return this.onERC721Received.selector;
 }
+
 //赎回nft
-function withdrawNFT(uint256 _tokenId) onlyManager external payable {
-    nftContract = IERC721(nft);
-    uint256 nowNumer = loansNumber[msg.sender];
-    for (uint i = 0; i < nowNumer; ++i ) {
-        if (loans[msg.sender][i].tokenId == _tokenId) {
-            require(loans[msg.sender][i].flag == 1, "You already have withdraw");   
-             loans[msg.sender][i].flag  = 0;
-             nftContract.approve(msg.sender, _tokenId);
+function withdrawNFT(address to,uint256 _tokenId) onlyManager external payable {
+    for (uint i = 0; i < receivedTokens[to].length; ++i ) {
+        if (receivedTokens[to][i].tokenId == _tokenId) {
+            require(receivedTokens[to][i].flag == 1, "You already have withdraw");   
+            TokenData storage td = receivedTokens[to][i];
+             td.flag  = 0;
+             nftContract.transferFrom(address(this),to,_tokenId);
         }
     }
+    
    
 }
 function ownerOf(uint256  _tokenId) public returns (address){
-                nftContract = IERC721(nft);
+            
                 return nftContract.ownerOf(_tokenId);
       
 }
-function loansList(address user) public returns (NftLoasInfo[] memory){
-    nftContract = IERC721(nft);
+function loansList(address user) public view returns (TokenData[] memory){
     
-    return loans[user];
+    return receivedTokens[user];
 }
 function loansCount(address user) public view returns (uint256){
-    uint256 nowNumer = loansNumber[user];
-    for (uint i = 0; i < nowNumer; ++i ) {
-            if(loans[user][i].flag == 0){
+    uint256 nowNumer = receivedTokens[user].length;
+    for (uint i = 0; i < receivedTokens[user].length; ++i ) {
+            if(receivedTokens[user][i].flag == 0){
                 nowNumer--;
                 }
                  
@@ -173,7 +152,6 @@ function loansCount(address user) public view returns (uint256){
     }
     return nowNumer;
 }
-
     modifier onlyManager() {
         require(
             msg.sender == owner,

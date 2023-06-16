@@ -18,7 +18,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"nft-loans/contracts/nft-loan.sol": "SafeMathCell"
+			"nft-loans/contracts/test.sol": "SafeMathCell"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -32,6 +32,14 @@
 		"remappings": []
 	},
 	"sources": {
+		"@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol": {
+			"keccak256": "0xa82b58eca1ee256be466e536706850163d2ec7821945abd6b4778cfb3bee37da",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6e75cf83beb757b8855791088546b8337e9d4684e169400c20d44a515353b708",
+				"dweb:/ipfs/QmYvPafLfoquiDMEj7CKHtvbgHu7TJNPSVPSCjrtjV8HjV"
+			]
+		},
 		"nft-loans/contracts/IERC165.sol": {
 			"keccak256": "0xd41f80d7225ad140ac46b21cf405be3f8e38f77a1a036cf3c019a4c6c1ced0e9",
 			"license": "MIT",
@@ -56,11 +64,11 @@
 				"dweb:/ipfs/Qma96vUugvuiPsqkN6TuGjuEoFGF5LLG2199baWxoFLQQ4"
 			]
 		},
-		"nft-loans/contracts/nft-loan.sol": {
-			"keccak256": "0xce3e91a77d32cab6592c8a73aa0b641d86fd880980d04c42a7e69714a4d8c8c4",
+		"nft-loans/contracts/test.sol": {
+			"keccak256": "0x9eb61c8488686c4ab5cbe19cd5f6827715b0e4c1ca7d8e13deaae65e8d2af87d",
 			"urls": [
-				"bzz-raw://8c4c0260f72a62f604022a30eae2e5309aa2ea61338a6c9c0d9edf3064d7f68e",
-				"dweb:/ipfs/QmTcqeJXe2vhwdUKahyYeAWWE6DmkJWEtyJ6MDkTMddSiU"
+				"bzz-raw://c0e2b42ac2aed96fc6357cadbd80ab5a79c893cffc81c1f241a7eeaee75ac89c",
+				"dweb:/ipfs/QmXcETmCzzNxgqAJEu5E3fH8pyH1GQXTqebuef86EDVDdx"
 			]
 		}
 	},
