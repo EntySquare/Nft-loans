@@ -21,7 +21,7 @@ type config struct {
 func NewInstance(network string) (*Contracts, *bind.TransactOpts, error) {
 	var config config
 
-	if network == "polygon" {
+	if network == "Polygon" {
 		config.Dial = loansconfig.Config("CHAIN_RPC_URL")
 		config.ContractAddress = loansconfig.Config("CONTRACT_ADDRESS")
 		config.Pk = loansconfig.Config("CONTRACT_PRIVATE_KEY")
