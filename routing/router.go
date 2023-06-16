@@ -22,5 +22,6 @@ func AppSetUp(appApi fiber.Router) {
 	appApi.Post("/pledgeNft", intcpt.AuthApp(), app.PledgeNft)
 	appApi.Post("/deposit", intcpt.AuthApp(), app.Deposit)
 	appApi.Post("/withdraw", intcpt.AuthApp(), app.Withdraw)
+	//appApi.Post("/pledgeNft", intcpt.AuthApp(), app.pledgeNft)
 
 }

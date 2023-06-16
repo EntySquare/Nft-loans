@@ -6,6 +6,7 @@ import (
 	"nft-loans/config"
 	"nft-loans/database"
 	"nft-loans/model"
+	"nft-loans/model/api"
 	"nft-loans/pkg"
 	"nft-loans/routing/types"
 	"strconv"
@@ -20,19 +21,36 @@ func PledgeNft(c *fiber.Ctx) error {
 	}
 	tt := time.Now()
 	userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
+
+	//如果存在了则不能再次插入
+
+	cc := model.Covenant{}
+	database.DB.Model(&model.Covenant{}).
+		Where("owner_id = ? and flag = '1' and pledge_id = ?",
+			userId, reqParams.NftId).Take(&cc)
+	if cc.ID != 0 { //有数据
+		return c.JSON(pkg.SuccessResponse(""))
+	}
+
 	err = database.DB.Transaction(func(tx *gorm.DB) error {
+		nftId, err := strconv.Atoi(reqParams.NftId)
+		if err != nil {
+			return err
+		}
+		nftName, _, interestRate := api.GetInterestRate(nftId)
+
 		atoi, err := strconv.Atoi(reqParams.Duration)
 		if err != nil {
 			return err
 		}
 		tf := tt.AddDate(0, 0, atoi)
 		co := model.Covenant{
-			NFTName:            "TEST",
+			NFTName:            nftName,
 			PledgeId:           reqParams.NftId,
 			ChainName:          reqParams.Chain,
 			Duration:           reqParams.Duration,
 			Hash:               reqParams.Hash,
-			InterestRate:       0.6,
+			InterestRate:       interestRate,
 			AccumulatedBenefit: 0,
 			PledgeFee:          0,
 			ReleaseFee:         0,
@@ -56,6 +74,7 @@ func PledgeNft(c *fiber.Ctx) error {
 		if err != nil {
 			return err
 		}
+		go api.SelectChainData(database.DB, userId)
 		return nil
 	})
 	if err != nil {
