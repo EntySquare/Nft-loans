@@ -29,7 +29,11 @@ func LoginAndRegister(c *fiber.Ctx) error {
 	user.WalletAddress = reqParams.WalletAddress
 	returnT := ""
 	err = user.GetByWalletAddress(database.DB)
-
+	//if err != nil {
+	//	if !errors.Is(err, gorm.ErrRecordNotFound) {
+	//		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "ErrRecordNotFound", ""))
+	//	}
+	//}
 	recommendUser := model.User{}
 	fmt.Println("推荐码：", reqParams.Code)
 	database.DB.Model(&model.User{}).Where("uid = ?", reqParams.Code).Find(&recommendUser)
@@ -46,12 +50,13 @@ func LoginAndRegister(c *fiber.Ctx) error {
 			user.InvestmentAddress = "http://localhost:4001/" + user.UID
 			returnT = pkg.RandomString(64)
 			user.Token = returnT + ":" + strconv.FormatInt(time.Now().Unix(), 10)
+			user.RecommendId = recommendUser.ID
+
 			err = user.InsertNewUser(tx)
 			if err != nil {
 				return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "注册失败"))
 			}
 
-			user.RecommendId = recommendUser.ID
 			err := user.GetByWalletAddress(tx)
 			if err != nil {
 				return err
