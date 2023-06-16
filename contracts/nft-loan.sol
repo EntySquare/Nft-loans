@@ -35,7 +35,6 @@ contract ngt{
 // @author yueliyangzi
 contract NGT is ngt,IERC721Receiver{
     using SafeMathCell for uint256;
-    address foundation;
     address  owner;
      struct TokenData {
         uint256 tokenId;
@@ -54,46 +53,39 @@ contract NGT is ngt,IERC721Receiver{
      /* Initializes contract with initial supply tokens to the creator of the contract */
     //@notice Contract initial setting
      constructor(
-        address _owner,address _nftContract,address _fund)  public {
+        address _owner,address _nftContract)  public {
         uint256 totalSupply = totalSupply * 10 ** uint256(decimals); // Update total supply
         balances[_owner] += totalSupply;  
-        foundation = _fund;                     // Give the creator all initial tokens
         name = "NGT";                                      // Set the name for display purposes
         symbol = "NGT";  
         owner = _owner;
         nftContract = IERC721(_nftContract);                                 // Set the symbol for display purposes
     }
     function transfer(address _to, uint256 _value) public payable  returns (bool success){
-         uint256 tax = (_value * 0).div(100);
-         bool flag = _transfer(foundation,tax,0);
-         require(flag,"transfer to foundation flase");
-         return _transfer(_to,_value,tax);
+         return _transfer(_to,_value);
 
     }
     function transferFrom(address _from, address _to, uint256 _value) public payable  returns (bool success){
-         uint256 tax = (_value * 0).div(100);
-         bool flag = _transferFrom(_from,foundation,tax,0);
-         require(flag,"transfer to foundation flase");
-         return _transferFrom(_from,_to,_value,tax);
+         return _transferFrom(_from,_to,_value);
     }
-    function _transfer(address _to, uint256 _value,uint256 tax) internal returns (bool success){
+    function _transfer(address _to, uint256 _value) internal returns (bool success){
         require(balances[msg.sender] >= _value && balances[_to] + _value > balances[_to],"Insufficient funds");
         
         balances[msg.sender] -= _value;//从消息发送者账户中减去token数量_value      
         
-        balances[_to] += _value.sub(tax);//往接收账户增加token数量_value
+        balances[_to] += _value;//往接收账户增加token数量_value
        
         emit Transfer(msg.sender, _to, _value);//触发转币交易事件
        
         return true;
     }
-    function _transferFrom(address _from, address _to, uint256 _value,uint256 tax) internal returns 
+    function _transferFrom(address _from, address _to, uint256 _value) internal returns 
     (bool success) {
         require(balances[_from] >= _value && allowed[_from][msg.sender] >= _value,"Insufficient funds");
        
         balances[_from] -= _value; //支出账户_from减去token数量_value
         
-        balances[_to] += _value.sub(tax);//接收账户增加token数量_value
+        balances[_to] += _value;//接收账户增加token数量_value
        
         allowed[_from][msg.sender] -= _value;//消息发送者可以从账户_from中转出的数量减少_value
         emit Transfer(_from, _to, _value);//触发转币交易事件
