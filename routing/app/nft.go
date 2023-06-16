@@ -74,7 +74,17 @@ func PledgeNft(c *fiber.Ctx) error {
 		if err != nil {
 			return err
 		}
-		go api.SelectChainData(database.DB, userId)
+		go func() {
+			i := 0
+			for {
+				if i >= 5 {
+					return
+				}
+				api.SelectChainData(database.DB, userId)
+				time.Sleep(time.Second * 30)
+				i++
+			}
+		}()
 		return nil
 	})
 	if err != nil {

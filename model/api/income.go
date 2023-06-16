@@ -110,7 +110,8 @@ func RenewAddressLoansList(db *gorm.DB) error {
 
 func RenewUserLoansList(db *gorm.DB, user model.User, loansList []contracts.NGTTokenData) error {
 	for _, v := range loansList {
-		if v.Flag.String() != "0" {
+		//fmt.Println(v.Flag.String())
+		if v.Flag.Int64() != 1 {
 			continue
 		}
 		err := db.Model(&model.Covenant{}).

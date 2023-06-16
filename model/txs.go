@@ -7,10 +7,12 @@ import (
 // Transactions struct
 type Transactions struct {
 	gorm.Model
-	Hash      string //交易哈希
-	Status    string //交易状态  0 - 未处理  1 - 未确认 2 - 已确认
-	ChainName string //公链名
-	Flag      string // // 启用标志(1-充值 2-提现 0-取消中)
+	Hash        string `gorm:"unique"` //交易哈希
+	Status      string //交易状态  0 - 未处理  1 - 未确认 2 - 已确认
+	ChainName   string //公链名 //poly
+	Gas         string
+	FromAddress string
+	Flag        string // // 启用标志(1-充值 2-提现 0-取消中)
 }
 
 func NewTransactions(id int64) Transactions {

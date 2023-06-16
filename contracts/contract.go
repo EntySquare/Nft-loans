@@ -9,6 +9,7 @@ import (
 	"github.com/ethereum/go-ethereum/ethclient"
 	"log"
 	"math/big"
+	loansconfig "nft-loans/config"
 )
 
 type config struct {
@@ -19,10 +20,11 @@ type config struct {
 
 func NewInstance(network string) (*Contracts, *bind.TransactOpts, error) {
 	var config config
+
 	if network == "polygon" {
-		config.Dial = "https://bsc-dataseed1.binance.org"
-		config.ContractAddress = "0x60A3Cff47fCA4eA4cBf28ff47E001F3a4468527b"
-		config.Pk = "privateKey"
+		config.Dial = loansconfig.Config("CHAIN_RPC_URL")
+		config.ContractAddress = loansconfig.Config("CONTRACT_ADDRESS")
+		config.Pk = loansconfig.Config("CONTRACT_PRIVATE_KEY")
 	} else if network == "eth" {
 		config.Dial = "https://mainnet.infura.io/v3/a936bfa4553a4a95862326edddc46306"
 		config.ContractAddress = "0x286699858aBAbA49Cace3681C1Ca3defDDC91868"

@@ -13,3 +13,7 @@ type DepositNgtReq struct {
 	Hash    string  `json:"hash"`
 	Chain   string  `json:"chain"`
 }
+
+type CheckHashApiReq struct {
+	Hash string `json:"hash"`
+}

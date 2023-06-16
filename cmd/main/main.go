@@ -31,7 +31,7 @@ func main() {
 	//  go eth.ScanEth(database.DB)
 	routing.Setup(fiberApp)
 
-	err = fiberApp.Listen(":4000")
+	err = fiberApp.Listen(":4001")
 	if err != nil {
 		fmt.Println(err.Error())
 	}

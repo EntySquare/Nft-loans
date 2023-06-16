@@ -4,10 +4,12 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 	"nft-loans/config"
+	"nft-loans/contracts"
 	"nft-loans/database"
 	"nft-loans/model"
 	"nft-loans/pkg"
 	"nft-loans/routing/types"
+	"strings"
 	"time"
 )
 
@@ -115,4 +117,52 @@ func Withdraw(c *fiber.Ctx) error {
 		return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), ""))
 	}
 	return c.JSON(pkg.SuccessResponse(""))
+}
+
+func CheckHashApi(c *fiber.Ctx) error {
+	var (
+		db        = database.DB
+		reqParams = types.CheckHashApiReq{}
+	)
+	err := c.BodyParser(&reqParams)
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
+	}
+
+	err = db.Create(&model.Transactions{
+		Hash:      reqParams.Hash,
+		Status:    "1",
+		ChainName: "poly",
+		Flag:      "1",
+	}).Error
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "Create Transactions err", ""))
+	}
+
+	go func() {
+		from, to, _, f, err := contracts.CheckHash(reqParams.Hash)
+		if err != nil {
+			return
+		}
+		fromStr := strings.ToLower(from)
+		toStr := strings.ToLower(to)
+		adminStr := strings.ToLower(config.Config("CONTRACT_ADDRESS"))
+		//是我方收钱
+		if toStr != adminStr {
+			return
+		}
+		user := model.User{WalletAddress: fromStr}
+		if err = user.GetByWalletAddress(db); err != nil {
+			return
+		}
+		//加余额
+		err = db.Model(&model.Account{}).
+			Where("id = ?", user.ID).
+			Update("balance", gorm.Expr("balance + ?", f)).Error
+		if err != nil {
+			panic(err)
+		}
+
+	}()
+	return err
 }
