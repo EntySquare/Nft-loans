@@ -10,6 +10,7 @@ require (
 	github.com/joho/godotenv v1.5.1
 	github.com/mr-tron/base58 v1.2.0
 	github.com/pquerna/otp v1.4.0
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/savsgio/gotils v0.0.0-20220530130905-52f3993e8d6d
 	github.com/sirupsen/logrus v1.9.0
 	github.com/tyler-smith/go-bip32 v1.0.0
