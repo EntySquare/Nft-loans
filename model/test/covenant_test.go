@@ -27,7 +27,7 @@ func TestInsertCovenant(t *testing.T) {
 		ExpireTime:         &tt,
 		NFTReleaseTime:     &tt,
 		Flag:               "1",
-		OwnerId:            20,
+		OwnerId:            1,
 		Owner:              model.User{},
 	}).Error
 	err = database.DB.Create(&model.Covenant{
@@ -45,7 +45,7 @@ func TestInsertCovenant(t *testing.T) {
 		ExpireTime:         &tt,
 		NFTReleaseTime:     &tt,
 		Flag:               "2",
-		OwnerId:            20,
+		OwnerId:            1,
 		Owner:              model.User{},
 	}).Error
 	err = database.DB.Create(&model.Covenant{
@@ -63,7 +63,7 @@ func TestInsertCovenant(t *testing.T) {
 		ExpireTime:         &tt,
 		NFTReleaseTime:     &tt,
 		Flag:               "1",
-		OwnerId:            20,
+		OwnerId:            1,
 		Owner:              model.User{},
 	}).Error
 	fmt.Println(err)

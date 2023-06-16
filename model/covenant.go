@@ -22,8 +22,10 @@ type Covenant struct {
 	ExpireTime         *time.Time //结束时间
 	NFTReleaseTime     *time.Time //NFT释放时间
 	Flag               string     // 启用标志(1-质押中 2-已完成 0-取消中)
-	OwnerId            uint       //用户id
-	Owner              User       //用户
+
+	ChainUnix int64 //链上质押时间
+	OwnerId   uint  //用户id
+	Owner     User  //用户
 }
 
 func NewCovenant(id int64) Covenant {
