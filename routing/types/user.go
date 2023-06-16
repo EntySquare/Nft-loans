@@ -47,9 +47,9 @@ type TransactionInfo struct {
 	TransactionType string  `json:"transaction_type"`
 }
 type BenefitInfo struct {
-	Balance            int64 `json:"balance"`
-	LastDayBenefit     int64 `json:"last_day_benefit"`
-	AccumulatedBenefit int64 `json:"accumulated_benefit"`
+	Balance            float64 `json:"balance"`
+	LastDayBenefit     float64 `json:"last_day_benefit"`
+	AccumulatedBenefit float64 `json:"accumulated_benefit"`
 }
 type MyCovenantFlowResp struct {
 	BenefitInfo BenefitInfo    `json:"benefit_info"`
@@ -62,9 +62,9 @@ type CovenantInfo struct {
 	Duration           string  `json:"duration"`
 	Hash               string  `json:"hash"`
 	InterestRate       float64 `json:"interest_rate"`
-	AccumulatedBenefit int64   `json:"accumulated_benefit"`
-	PledgeFee          int64   `json:"pledge_fee"`
-	ReleaseFee         int64   `json:"release_fee"`
+	AccumulatedBenefit float64 `json:"accumulated_benefit"`
+	PledgeFee          float64 `json:"pledge_fee"`
+	ReleaseFee         float64 `json:"release_fee"`
 	StartTime          int64   `json:"start_time"`
 	ExpireTime         int64   `json:"expire_time"`
 	NFTReleaseTime     int64   `json:"nft_release_time"`
