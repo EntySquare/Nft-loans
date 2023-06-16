@@ -16,55 +16,55 @@ import (
 )
 
 func Deposit(c *fiber.Ctx) error {
-	reqParams := types.DepositNgtReq{}
-	err := c.BodyParser(&reqParams)
-	if err != nil {
-		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
-	}
-	userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
-	err = database.DB.Transaction(func(tx *gorm.DB) error {
-		acc := model.Account{}
-		acc.UserId = userId
-		err = acc.GetByUserId(database.DB)
-		if err != nil {
-			return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), ""))
-		}
-		acc.FrozenBalance += reqParams.Num
-		err = acc.UpdateAccount(tx)
-		if err != nil {
-			return err
-		}
-		tt := time.Now()
-		acf := model.AccountFlow{
-			AccountId:       acc.ID,
-			Num:             reqParams.Num,
-			Chain:           reqParams.Chain,
-			Address:         reqParams.Address,
-			Hash:            reqParams.Hash,
-			AskForTime:      &tt,
-			AchieveTime:     nil,
-			TransactionType: "1",
-			Flag:            "1",
-		}
-		err = acf.InsertNewAccountFlow(tx)
-		if err != nil {
-			return err
-		}
-		txs := model.Transactions{
-			Hash:      reqParams.Hash,
-			Status:    "0",
-			ChainName: reqParams.Chain,
-			Flag:      "1",
-		}
-		err := txs.InsertNewTransactions(tx)
-		if err != nil {
-			return err
-		}
-		return nil
-	})
-	if err != nil {
-		return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), ""))
-	}
+	//reqParams := types.DepositNgtReq{}
+	//err := c.BodyParser(&reqParams)
+	//if err != nil {
+	//	return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
+	//}
+	//userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
+	//err = database.DB.Transaction(func(tx *gorm.DB) error {
+	//	acc := model.Account{}
+	//	acc.UserId = userId
+	//	err = acc.GetByUserId(database.DB)
+	//	if err != nil {
+	//		return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), ""))
+	//	}
+	//	acc.FrozenBalance += reqParams.Num
+	//	err = acc.UpdateAccount(tx)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	tt := time.Now()
+	//	acf := model.AccountFlow{
+	//		AccountId:       acc.ID,
+	//		Num:             reqParams.Num,
+	//		Chain:           reqParams.Chain,
+	//		Address:         reqParams.Address,
+	//		Hash:            reqParams.Hash,
+	//		AskForTime:      &tt,
+	//		AchieveTime:     nil,
+	//		TransactionType: "1",
+	//		Flag:            "1",
+	//	}
+	//	err = acf.InsertNewAccountFlow(tx)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	txs := model.Transactions{
+	//		Hash:      reqParams.Hash,
+	//		Status:    "0",
+	//		ChainName: reqParams.Chain,
+	//		Flag:      "1",
+	//	}
+	//	err := txs.InsertNewTransactions(tx)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	return nil
+	//})
+	//if err != nil {
+	//	return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), ""))
+	//}
 
 	return c.JSON(pkg.SuccessResponse(""))
 }
@@ -91,7 +91,7 @@ func Withdraw(c *fiber.Ctx) error {
 		tt := time.Now()
 		acf := model.AccountFlow{
 			AccountId:       acc.ID,
-			Num:             reqParams.Num,
+			Num:             float64(reqParams.Num),
 			Chain:           reqParams.Chain,
 			Address:         reqParams.Address,
 			Hash:            hash,
@@ -165,7 +165,29 @@ func CheckHashApi(c *fiber.Ctx) error {
 		if err != nil {
 			panic(err)
 		}
-
+		db.Model(&model.Transactions{}).Where("hash = ?", reqParams.Hash).
+			Updates(map[string]interface{}{"status": "2", "from_address": fromStr})
+		//gorm.Model
+		acc := model.Account{}
+		acc.UserId = user.ID
+		err = acc.GetByUserId(database.DB)
+		if err != nil {
+			panic(err)
+		}
+		now := time.Now()
+		acf := model.AccountFlow{
+			AccountId:       acc.ID,
+			Num:             f,
+			Chain:           "poly",
+			Address:         fromStr,
+			Hash:            reqParams.Hash,
+			AskForTime:      &now,
+			AchieveTime:     nil,
+			TransactionType: "1",
+			Flag:            "1",
+		}
+		database.DB.Create(&acf)
 	}()
-	return err
+
+	return c.JSON(pkg.SuccessResponse(""))
 }

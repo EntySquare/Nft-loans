@@ -125,15 +125,18 @@ func MyNgt(c *fiber.Ctx) error {
 		if err != nil {
 			return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "查询账户交易失败"))
 		}
+		//AchieveTime := nil
 		in := types.TransactionInfo{
 			Num:             accflow.Num,
 			Chain:           accflow.Chain,
 			Address:         accflow.Address,
 			Hash:            accflow.Hash,
 			AskForTime:      accflow.AskForTime.Unix(),
-			AchieveTime:     accflow.AchieveTime.Unix(),
 			TransactionType: accflow.TransactionType,
 			Status:          txs.Status,
+		}
+		if accflow.AchieveTime != nil {
+			in.AchieveTime = accflow.AchieveTime.Unix()
 		}
 		data.Transactions = append(data.Transactions, in)
 

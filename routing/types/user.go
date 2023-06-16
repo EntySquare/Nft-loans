@@ -37,14 +37,14 @@ type MyNgtResp struct {
 	Transactions []TransactionInfo `json:"transactions"`
 }
 type TransactionInfo struct {
-	Num             int64  `json:"num"`
-	Chain           string `json:"chain"`
-	Status          string `json:"status"`
-	Address         string `json:"address"`
-	Hash            string `json:"hash"`
-	AskForTime      int64  `json:"ask_for_time"`
-	AchieveTime     int64  `json:"achieve_time"`
-	TransactionType string `json:"transaction_type"`
+	Num             float64 `json:"num"`
+	Chain           string  `json:"chain"`
+	Status          string  `json:"status"`
+	Address         string  `json:"address"`
+	Hash            string  `json:"hash"`
+	AskForTime      int64   `json:"ask_for_time"`
+	AchieveTime     int64   `json:"achieve_time"`
+	TransactionType string  `json:"transaction_type"`
 }
 type BenefitInfo struct {
 	Balance            int64 `json:"balance"`
