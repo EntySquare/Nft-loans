@@ -9,3 +9,10 @@ type PledgeNgtReq struct {
 type PledgeNgtResp struct {
 	Code int64 `json:"code"`
 }
+type CancelCovenantReq struct {
+	NftId string `json:"nft_id"`
+	Chain string `json:"chain"`
+}
+type CancelCovenantResp struct {
+	Code int64 `json:"code"`
+}
