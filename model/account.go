@@ -8,8 +8,8 @@ import (
 type Account struct {
 	gorm.Model
 	UserId        uint
-	Balance       float64
-	FrozenBalance float64
+	Balance       int64
+	FrozenBalance int64
 	Flag          string // 启用标志(1-启用 0-停用)
 }
 

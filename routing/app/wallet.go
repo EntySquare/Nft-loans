@@ -1,9 +1,12 @@
 package app
 
 import (
+	"github.com/ethereum/go-ethereum/common"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
+	"math/big"
 	"nft-loans/config"
+	"nft-loans/contracts"
 	"nft-loans/database"
 	"nft-loans/model"
 	"nft-loans/pkg"
@@ -18,6 +21,7 @@ func Deposit(c *fiber.Ctx) error {
 		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
 	}
 	userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
+	contracts.TransferFrom(common.HexToAddress("Manager"), common.HexToAddress(reqParams.Address), big.NewInt(reqParams.Num), reqParams.Chain)
 	err = database.DB.Transaction(func(tx *gorm.DB) error {
 		acc := model.Account{}
 		acc.UserId = userId

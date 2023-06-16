@@ -15,9 +15,9 @@ type Covenant struct {
 	Duration           string     //质押期限
 	Hash               string     //交易哈希
 	InterestRate       float64    //日利率
-	AccumulatedBenefit float64    //累计收益
-	PledgeFee          float64    //质押费用
-	ReleaseFee         float64    //释放费用
+	AccumulatedBenefit int64      //累计收益
+	PledgeFee          int64      //质押费用
+	ReleaseFee         int64      //释放费用
 	StartTime          *time.Time //开始执行时间
 	ExpireTime         *time.Time //结束时间
 	NFTReleaseTime     *time.Time //NFT释放时间
@@ -62,14 +62,14 @@ func (c *Covenant) SelectMyCovenant(db *gorm.DB) (cs []Covenant, err error) {
 	return cs, err
 }
 
-func (c *Covenant) GetUserAccumulatedBenefit(db *gorm.DB) (float64, error) {
-	var accumulatedBenefit sql.NullFloat64
+func (c *Covenant) GetUserAccumulatedBenefit(db *gorm.DB) (int64, error) {
+	var accumulatedBenefit sql.NullInt64
 	err := db.Model(&c).Select("sum(release_fee)").Where("owner_id = ? ", c.OwnerId).Scan(&accumulatedBenefit).Error
 	if err != nil {
 		return 0, err
 	}
 	if accumulatedBenefit.Valid {
-		return accumulatedBenefit.Float64, nil
+		return accumulatedBenefit.Int64, nil
 	} else {
 		return 0, err
 	}

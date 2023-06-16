@@ -10,7 +10,7 @@ type AccountFlow struct {
 	gorm.Model
 	AccountId       uint
 	Account         Account
-	Num             float64
+	Num             int64
 	Chain           string
 	Address         string
 	Hash            string
