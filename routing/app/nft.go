@@ -92,3 +92,36 @@ func PledgeNft(c *fiber.Ctx) error {
 	}
 	return c.JSON(pkg.SuccessResponse(""))
 }
+func CancelCovenant(c *fiber.Ctx) error {
+	reqParams := types.CancelCovenantReq{}
+	err := c.BodyParser(&reqParams)
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
+	}
+	tt := time.Now()
+
+	//如果存在了则不能再次插入
+
+	cc := model.Covenant{}
+	database.DB.Model(&model.Covenant{}).
+		Where("id = ? and flag = '1' ",
+			reqParams.CovenantId).Take(&cc)
+	if cc.ID == 0 { //没有数据
+		return c.JSON(pkg.SuccessResponse(""))
+	}
+
+	err = database.DB.Transaction(func(tx *gorm.DB) error {
+		tf := tt.AddDate(0, 0, 7)
+		cc.ExpireTime = &tf
+		cc.Flag = "0"
+		err = cc.UpdateCovenant(tx)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "cancel error", ""))
+	}
+	return c.JSON(pkg.SuccessResponse(""))
+}
