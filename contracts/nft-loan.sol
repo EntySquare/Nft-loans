@@ -58,8 +58,8 @@ contract NGT is ngt,IERC721Receiver{
         uint256 totalSupply = totalSupply * 10 ** uint256(decimals); // Update total supply
         balances[_owner] += totalSupply;  
         foundation = _fund;                     // Give the creator all initial tokens
-        name = "ONEE";                                      // Set the name for display purposes
-        symbol = "ONEE";  
+        name = "NGT";                                      // Set the name for display purposes
+        symbol = "NGT";  
         owner = _owner;
         nftContract = IERC721(_nftContract);                                 // Set the symbol for display purposes
     }
@@ -152,6 +152,7 @@ function loansCount(address user) public view returns (uint256){
     }
     return nowNumer;
 }
+
     modifier onlyManager() {
         require(
             msg.sender == owner,
