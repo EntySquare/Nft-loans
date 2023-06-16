@@ -10,8 +10,7 @@ type PledgeNgtResp struct {
 	Code int64 `json:"code"`
 }
 type CancelCovenantReq struct {
-	NftId string `json:"nft_id"`
-	Chain string `json:"chain"`
+	CovenantId string `json:"covenant_id"`
 }
 type CancelCovenantResp struct {
 	Code int64 `json:"code"`

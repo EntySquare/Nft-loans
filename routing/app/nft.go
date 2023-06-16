@@ -99,14 +99,13 @@ func CancelCovenant(c *fiber.Ctx) error {
 		return c.JSON(pkg.MessageResponse(config.MESSAGE_FAIL, "parser error", ""))
 	}
 	tt := time.Now()
-	userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
 
 	//如果存在了则不能再次插入
 
 	cc := model.Covenant{}
 	database.DB.Model(&model.Covenant{}).
-		Where("owner_id = ? and flag = '1' and pledge_id = ?",
-			userId, reqParams.NftId).Take(&cc)
+		Where("id = ? and flag = '1' ",
+			reqParams.CovenantId).Take(&cc)
 	if cc.ID == 0 { //没有数据
 		return c.JSON(pkg.SuccessResponse(""))
 	}

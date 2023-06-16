@@ -56,6 +56,7 @@ type MyCovenantFlowResp struct {
 	Covenants   []CovenantInfo `json:"covenant_flows"`
 }
 type CovenantInfo struct {
+	CovenantId         uint    `json:"covenant_id"`
 	NFTName            string  `json:"nft_name"`
 	PledgeId           string  `json:"pledge_id"`
 	ChainName          string  `json:"chain_name"`

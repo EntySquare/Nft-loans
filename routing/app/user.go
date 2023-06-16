@@ -168,6 +168,7 @@ func MyCovenantFlow(c *fiber.Ctx) error {
 	}
 	for _, coi := range cos {
 		in := types.CovenantInfo{
+			CovenantId:         coi.ID,
 			NFTName:            coi.NFTName,
 			PledgeId:           coi.PledgeId,
 			ChainName:          coi.ChainName,
