@@ -1,6 +1,7 @@
 package app
 
 import (
+	"errors"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -76,23 +77,28 @@ func Withdraw(c *fiber.Ctx) error {
 	}
 	userId := c.Locals(config.LOCAL_USERID_UINT).(uint)
 
-	hash := contracts.TransferFrom(common.HexToAddress("Manager"), common.HexToAddress(reqParams.Address), big.NewInt(int64(reqParams.Num*10000)), reqParams.Chain)
 	err = database.DB.Transaction(func(tx *gorm.DB) error {
 		acc := model.Account{}
 		acc.UserId = userId
 		err = acc.GetByUserId(database.DB)
 		if err != nil {
-			return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), ""))
+			return err
+			//return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), ""))
+		}
+		if acc.Balance < reqParams.Num {
+			return errors.New("acc.Balance < reqParams.Num")
+			//return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, "acc.Balance < reqParams.Num", ""))
 		}
 		acc.Balance -= reqParams.Num
 		err = acc.UpdateAccount(tx)
 		if err != nil {
 			return err
 		}
+		hash := contracts.TransferFrom(common.HexToAddress(config.Config("CONTRACT_PUBLIC_KEY")), common.HexToAddress(reqParams.Address), big.NewInt(int64(reqParams.Num*10000)), reqParams.Chain)
 		tt := time.Now()
 		acf := model.AccountFlow{
 			AccountId:       acc.ID,
-			Num:             float64(reqParams.Num),
+			Num:             reqParams.Num,
 			Chain:           reqParams.Chain,
 			Address:         reqParams.Address,
 			Hash:            hash,
@@ -106,15 +112,20 @@ func Withdraw(c *fiber.Ctx) error {
 			return err
 		}
 		txs := model.Transactions{
-			Hash:      reqParams.Hash,
-			Status:    "0",
+			Hash:      hash,
+			Status:    "2",
 			ChainName: reqParams.Chain,
-			Flag:      "1",
+			Flag:      "2",
 		}
 		err := txs.InsertNewTransactions(tx)
 		if err != nil {
 			return err
 		}
+
+		//go func() {
+		//	from, to, _, f, err := contracts.CheckHash(hash)
+		//}()
+
 		return nil
 	})
 	if err != nil {

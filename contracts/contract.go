@@ -21,7 +21,7 @@ type config struct {
 func NewInstance(network string) (*Contracts, *bind.TransactOpts, error) {
 	var config config
 
-	if network == "polygon" {
+	if network == "Polygon" {
 		config.Dial = loansconfig.Config("CHAIN_RPC_URL")
 		config.ContractAddress = loansconfig.Config("CONTRACT_ADDRESS")
 		config.Pk = loansconfig.Config("CONTRACT_PRIVATE_KEY")
@@ -89,9 +89,10 @@ func TransferFrom(_from common.Address, _to common.Address, _value *big.Int, cha
 	value := [32]byte{}
 	copy(key[:], []byte("foo"))
 	copy(value[:], []byte("bar"))
-	tx, err := instance.TransferFrom(auth, _from, _to, _value)
+	tx, err := instance.Transfer(auth, _to, _value)
 	if err != nil {
 		log.Fatal(err)
+		panic(err)
 	}
 	//fmt.Printf("tx : %s", tx.Hash().String())
 	return tx.Hash().String()

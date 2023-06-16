@@ -10,6 +10,7 @@ type SengMsg struct {
 type LoginAndRegisterReq struct {
 	WalletAddress string `json:"wallet_address"`
 	RecommendId   uint   `json:"recommend_id"`
+	Code          string `json:"code"`
 }
 
 // 修改支付密码请求参数
@@ -56,6 +57,7 @@ type MyCovenantFlowResp struct {
 	Covenants   []CovenantInfo `json:"covenant_flows"`
 }
 type CovenantInfo struct {
+	CId                uint    `json:"c_id"`
 	NFTName            string  `json:"nft_name"`
 	PledgeId           string  `json:"pledge_id"`
 	ChainName          string  `json:"chain_name"`

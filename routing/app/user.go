@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 	"nft-loans/config"
@@ -16,6 +17,7 @@ import (
 
 // LoginAndRegister 登录注册
 func LoginAndRegister(c *fiber.Ctx) error {
+	fmt.Println("/LoginAndRegister api...")
 	reqParams := types.LoginAndRegisterReq{}
 	err := c.BodyParser(&reqParams)
 	if err != nil {
@@ -27,6 +29,11 @@ func LoginAndRegister(c *fiber.Ctx) error {
 	user.WalletAddress = reqParams.WalletAddress
 	returnT := ""
 	err = user.GetByWalletAddress(database.DB)
+
+	recommendUser := model.User{}
+	fmt.Println("推荐码：", reqParams.Code)
+	database.DB.Model(&model.User{}).Where("uid = ?", reqParams.Code).Find(&recommendUser)
+
 	err = database.DB.Transaction(func(tx *gorm.DB) error {
 		if err != nil {
 			if !strings.Contains(err.Error(), "record not found") {
@@ -43,7 +50,8 @@ func LoginAndRegister(c *fiber.Ctx) error {
 			if err != nil {
 				return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "注册失败"))
 			}
-			user.RecommendId = reqParams.RecommendId
+
+			user.RecommendId = recommendUser.ID
 			err := user.GetByWalletAddress(tx)
 			if err != nil {
 				return err
@@ -81,7 +89,7 @@ func MyInvestment(c *fiber.Ctx) error {
 		InvestmentUsers: make([]types.InvestmentUserInfo, 0),
 	}
 	data.UID = user.UID
-	data.InvestmentAddress = user.InvestmentAddress
+	data.InvestmentAddress = config.Config("WEB_URL") + "/&code=" + user.UID
 	data.Level = user.Level
 	data.InvestmentCount = int64(len(api.UserTree[userId].Branch))
 	data.AccumulatedPledgeCount = api.GetBranchAccumulatedPledgeCount(userId)
@@ -168,6 +176,7 @@ func MyCovenantFlow(c *fiber.Ctx) error {
 	}
 	for _, coi := range cos {
 		in := types.CovenantInfo{
+			CId:                coi.ID,
 			NFTName:            coi.NFTName,
 			PledgeId:           coi.PledgeId,
 			ChainName:          coi.ChainName,
