@@ -51,7 +51,7 @@ func LoginAndRegister(c *fiber.Ctx) error {
 			returnT = pkg.RandomString(64)
 			user.Token = returnT + ":" + strconv.FormatInt(time.Now().Unix(), 10)
 			user.RecommendId = recommendUser.ID
-
+			api.AddNewBranch(user.RecommendId, user.ID)
 			err = user.InsertNewUser(tx)
 			if err != nil {
 				return c.JSON(pkg.MessageResponse(config.TOKEN_FAIL, err.Error(), "注册失败"))
