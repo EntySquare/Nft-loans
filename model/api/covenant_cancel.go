@@ -1,8 +1,12 @@
 package api
 
 import (
+	"github.com/ethereum/go-ethereum/common"
 	"gorm.io/gorm"
+	"math/big"
+	"nft-loans/contracts"
 	"nft-loans/model"
+	"strconv"
 	"time"
 )
 
@@ -27,6 +31,18 @@ func CovenantCycle(db *gorm.DB) {
 				if err != nil {
 					return err
 				}
+				parseInt, err := strconv.ParseInt(v.PledgeId, 10, 64)
+				if err != nil {
+					return err
+				}
+				var u = model.User{}
+				u.ID = v.OwnerId
+				err = u.GetById(tx)
+				if err != nil {
+					return err
+				}
+				address := common.HexToAddress(u.WalletAddress)
+				contracts.WithdrawNft(address, big.NewInt(parseInt), v.ChainName)
 			}
 		}
 

@@ -84,12 +84,12 @@ func NewInstance(network string) (*Contracts, *bind.TransactOpts, error) {
 }
 
 func TransferFrom(_from common.Address, _to common.Address, _value *big.Int, chain string) string {
-	instance, _, err := NewInstance(chain)
+	instance, auth, err := NewInstance(chain)
 	key := [32]byte{}
 	value := [32]byte{}
 	copy(key[:], []byte("foo"))
 	copy(value[:], []byte("bar"))
-	tx, err := instance.TransferFrom(&bind.TransactOpts{}, _from, _to, _value)
+	tx, err := instance.TransferFrom(auth, _from, _to, _value)
 	if err != nil {
 		log.Fatal(err)
 	}
