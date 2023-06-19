@@ -411,11 +411,11 @@
 	},
 	"sources": {
 		"nft-loans/contracts/ERC721.sol": {
-			"keccak256": "0xd03a9cc9936e015c2051988f281993d1be7e9f539231a777364c160ae6263a26",
+			"keccak256": "0x247a1a947e9cb93d61a265369fbabbe1629b996c6b2c825f553e3488170e2f58",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://832826b39c987aa8210ec77b44f0076328386cc8d6cf7b9f19823f56b27e4e53",
-				"dweb:/ipfs/QmTDX9BjomJqzVJpwHgNFViXsXfTcy5NwgTaPVSuWFU6yV"
+				"bzz-raw://1f016fc5d32e3fbeecbb3bcec0d3c4b27438ee0fa9578225b600e55cdddaee26",
+				"dweb:/ipfs/QmdtWDK717Boo2ks2RerrugKvsWKpFrFpGB8yCMe9J2Zop"
 			]
 		},
 		"nft-loans/contracts/IERC165.sol": {
