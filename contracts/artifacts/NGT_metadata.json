@@ -214,7 +214,7 @@
 	},
 	"settings": {
 		"compilationTarget": {
-			"nft-loans/contracts/test.sol": "ngt"
+			"nft-loans/contracts/nft-loan.sol": "ngt"
 		},
 		"evmVersion": "london",
 		"libraries": {},
@@ -260,11 +260,11 @@
 				"dweb:/ipfs/Qma96vUugvuiPsqkN6TuGjuEoFGF5LLG2199baWxoFLQQ4"
 			]
 		},
-		"nft-loans/contracts/test.sol": {
-			"keccak256": "0x9eb61c8488686c4ab5cbe19cd5f6827715b0e4c1ca7d8e13deaae65e8d2af87d",
+		"nft-loans/contracts/nft-loan.sol": {
+			"keccak256": "0xcb7fbb836d1bb5b165c3db29a0987631264099161a931f9c387b573b711b6ed4",
 			"urls": [
-				"bzz-raw://c0e2b42ac2aed96fc6357cadbd80ab5a79c893cffc81c1f241a7eeaee75ac89c",
-				"dweb:/ipfs/QmXcETmCzzNxgqAJEu5E3fH8pyH1GQXTqebuef86EDVDdx"
+				"bzz-raw://19c1d1f16f556e590ddb145742f049f78d80fdd630d6a5e47a39132bce85836f",
+				"dweb:/ipfs/QmRRW8ej2zRpxjP1AFC7RLoeVpGcq8un3A97THQtCYTS87"
 			]
 		}
 	},
