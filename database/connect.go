@@ -23,6 +23,7 @@ func ConnectDB() {
 		&model.CovenantFlow{},
 		&model.Transactions{},
 		&model.PLog{},
+		&model.NftInfo{},
 	}
 	var err error
 	p := config.Config("DB_PORT")

@@ -155,7 +155,8 @@ func GetInterestRate(id int, tx *gorm.DB) (string, int64, float64) {
 	}
 	name = ni.Name
 	num = ni.TypeNum
-	f64 = ni.DayRate
+	float, err := strconv.ParseFloat(ni.DayRate, 64)
+	f64 = float
 	return name, num, f64
 }
 

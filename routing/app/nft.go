@@ -138,6 +138,7 @@ func GetAllNftInfo(c *fiber.Ctx) error {
 			Name:      info.Name,
 			TypeNum:   info.TypeNum,
 			DayRate:   info.DayRate,
+			ImgUrl:    info.ImgUrl,
 		}
 		data.List = append(data.List, in)
 	}

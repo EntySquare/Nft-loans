@@ -24,7 +24,7 @@ func AppSetUp(appApi fiber.Router) {
 	appApi.Post("/withdraw", intcpt.AuthApp(), app.Withdraw)
 	appApi.Post("/checkHash", intcpt.AuthApp(), app.CheckHashApi)
 	appApi.Post("/cancelCovenant", intcpt.AuthApp(), app.CancelCovenant)
-	appApi.Post("/getAllNftInfo", intcpt.AuthManagerApp(), app.GetAllNftInfo)
+	appApi.Post("/getAllNftInfo", intcpt.AuthApp(), app.GetAllNftInfo)
 	appApi.Post("/updateNftInfo", intcpt.AuthManagerApp(), app.UpdateNftInfo)
 	//appApi.Post("/pledgeNft", intcpt.AuthApp(), app.pledgeNft)
 
