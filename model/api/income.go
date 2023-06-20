@@ -43,7 +43,7 @@ func IncomeRunP(db *gorm.DB) {
 			if err != nil {
 				return err
 			}
-			_, reward, _ := GetInterestRate(nftId)
+			_, reward, _ := GetInterestRate(nftId, tx)
 			//AccumulatedBenefit float64    //累计收益
 			//PledgeFee          float64    //质押费用
 			//ReleaseFee         float64    //释放费用
@@ -127,7 +127,7 @@ func RenewUserLoansList(db *gorm.DB, user model.User, loansList []contracts.NGTT
 	return nil
 }
 
-func GetInterestRate(id int) (string, int64, float64) {
+func GetInterestRate(id int, tx *gorm.DB) (string, int64, float64) {
 	//var interest InterestRate
 	//Token ID 1-500 朱雀 AAA级 0.7%日        NGT 1000分比，1000*0.007=7 单利。
 	//Token ID 501-3500  白虎  AA级  0.6%日   NGT 1000分比，1000*0.006=6 单利。
@@ -135,19 +135,27 @@ func GetInterestRate(id int) (string, int64, float64) {
 	name := ""
 	num := int64(0)
 	f64 := 0.0
+	var ni = model.NftInfo{}
 	if id >= 1 && id <= 500 {
-		name = "朱雀"
-		num = 7
-		f64 = 0.007
+		ni.TypeNum = 7
 	} else if id >= 501 && id <= 3500 {
-		name = "白虎"
-		num = 6
-		f64 = 0.006
+		ni.TypeNum = 6
+		//name = "白虎"
+		//num = 6
+		//f64 = 0.006
 	} else if id >= 3501 && id <= 10000 {
-		name = "玄武"
-		num = 5
-		f64 = 0.005
+		ni.TypeNum = 5
+		//name = "玄武"
+		//num = 5
+		//f64 = 0.005
 	}
+	err := ni.GetByTypeNum(tx)
+	if err != nil {
+		return "", 0, 0
+	}
+	name = ni.Name
+	num = ni.TypeNum
+	f64 = ni.DayRate
 	return name, num, f64
 }
 
